@@ -16,15 +16,15 @@ class UsuarioService:
             query = """
                 INSERT INTO USUARIO (NOME, EMAIL, SENHA, FOTO)
                 VALUES (%s, %s, %s, %s)
-                RETURNING ID_USUARIO, NOME, EMAIL, FOTO
+                RETURNING ID_USUARIO, NOME, EMAIL, SENHA, FOTO
             """
             self.db.cursor.execute(query, (nome, email, senha, foto))
             self.db.commit()
             
             result = self.db.cursor.fetchone()
             if result:
-                usuario_id, nome_db, email_db, foto_db = result
-                usuario = Usuario(nome_db, email_db, foto_db, id=usuario_id)
+                usuario_id, nome_db, email_db, senha_db, foto_db = result
+                usuario = Usuario(nome_db, email_db, senha_db, foto_db, id=usuario_id)
                 return usuario
             return None
             
@@ -39,13 +39,13 @@ class UsuarioService:
         Returns: Usuario object if found, None otherwise
         """
         try:
-            query = "SELECT ID_USUARIO, NOME, EMAIL, FOTO FROM USUARIO WHERE ID_USUARIO = %s"
+            query = "SELECT ID_USUARIO, NOME, EMAIL, SENHA, FOTO FROM USUARIO WHERE ID_USUARIO = %s"
             self.db.cursor.execute(query, (id_usuario,))
             
             result = self.db.cursor.fetchone()
             if result:
-                usuario_id, nome, email, foto = result
-                return Usuario(nome, email, foto, id=usuario_id)
+                usuario_id, nome, email, senha, foto = result
+                return Usuario(nome, email, senha, foto, id=usuario_id)
             return None
             
         except Error as e:
