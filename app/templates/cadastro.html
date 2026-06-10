@@ -3,84 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kamban — Login</title>
+  <title>Kamban - Cadastro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --purple:       #7c3aed;
-      --purple-light: #9f67f4;
-      --purple-dark:  #33146a;
-      --purple-pale:  #c7aaff;
-      --purple-bg:    #f5f0ff;
-      --white:        #ffffff;
-      --off-white:    #f7f5ff;
-      --input-bg:     #f5f3fd;
-      --border:       #d9d2ef;
-      --dark:         #1a1233;
-      --muted:        #7f72a6;
-      --accent:       #a07bf0;
-      --green:        #21c88c;
-      --pink:         #eb599a;
-      --yellow:       #f9d933;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html, body {
-      height: 100%;
+    body {
       font-family: 'Inter', sans-serif;
-      background: var(--off-white);
-    }
-
-    /* ── LAYOUT PRINCIPAL ── */
-    .page {
-      display: flex;
       min-height: 100vh;
+      display: flex;
+      background: #f7f5ff;
     }
 
-    /* ── PAINEL ESQUERDO ── */
-    .left-panel {
-      flex: 0 0 50%;
-      background: var(--purple-dark);
-      position: relative;
-      overflow: hidden;
+    /* lado esquerdo roxo */
+    .lado-esquerdo {
+      width: 42%;
+      background: #33146a;
       display: flex;
       flex-direction: column;
-      padding: 36px 48px 48px;
+      padding: 36px 44px 48px;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Círculos decorativos de fundo */
-    .left-panel::before,
-    .left-panel::after {
+    .lado-esquerdo::before {
       content: '';
       position: absolute;
+      width: 360px;
+      height: 360px;
       border-radius: 50%;
-      pointer-events: none;
-    }
-    .left-panel::before {
-      width: 340px; height: 340px;
-      top: -80px; left: -80px;
-      background: var(--purple-light);
+      background: #9f67f4;
       opacity: 0.22;
-    }
-    .left-panel::after {
-      width: 280px; height: 280px;
-      bottom: 80px; right: -40px;
-      background: var(--purple);
-      opacity: 0.18;
+      top: -100px;
+      left: -100px;
     }
 
-    .dec-circle {
+    .lado-esquerdo::after {
+      content: '';
       position: absolute;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
-      pointer-events: none;
-      width: 180px; height: 180px;
-      bottom: 120px; left: 60px;
-      background: var(--purple-pale);
-      opacity: 0.08;
+      background: #7c3aed;
+      opacity: 0.18;
+      bottom: 60px;
+      right: -60px;
     }
 
-    /* Logo */
     .logo {
       display: flex;
       align-items: center;
@@ -89,506 +62,604 @@
       z-index: 1;
     }
 
-    .logo-icon {
-      width: 40px; height: 40px;
-      background: var(--purple-light);
-      border-radius: 11px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; font-weight: 700; color: var(--white);
-      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.15);
-    }
-
-    .logo-name {
-      font-size: 18px; font-weight: 700;
-      color: var(--white);
-      letter-spacing: -0.3px;
-    }
-
-    /* Ilustração SVG */
-    .illustration {
-      flex: 1;
+    .logo-icone {
+      width: 40px;
+      height: 40px;
+      background: #9f67f4;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      z-index: 1;
-      margin: 0 -10px;
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
     }
 
-    .illustration svg {
+    .logo span {
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .titulo-lado {
+      font-size: 26px;
+      font-weight: 700;
+      color: white;
+      margin-top: 44px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subtitulo-lado {
+      font-size: 14px;
+      color: rgba(199, 170, 255, 0.85);
+      margin-top: 8px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* steps */
+    .steps {
+      margin-top: 32px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 17px;
+      top: 38px;
+      width: 2px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .step-numero {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+      margin-bottom: 48px;
+    }
+
+    .step-numero.feito    { background: #21c88c; }
+    .step-numero.atual    { background: #9f67f4; box-shadow: 0 0 0 4px rgba(159,103,244,0.25); }
+    .step-numero.pendente { background: rgba(255,255,255,0.12); }
+
+    .step-texto { padding-top: 4px; }
+
+    .step-nome {
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .step-nome.apagado {
+      color: rgba(255,255,255,0.4);
+      font-weight: 400;
+    }
+
+    .step-desc {
+      font-size: 12px;
+      color: rgba(199,170,255,0.7);
+      margin-top: 2px;
+    }
+
+    /* ilustração */
+    .ilustracao {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      margin-top: 16px;
+    }
+
+    .ilustracao svg {
       width: 100%;
-      max-width: 420px;
+      max-width: 380px;
       height: auto;
-      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25));
     }
 
-    /* Texto tagline */
-    .tagline {
+    /* depoimento */
+    .depoimento {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-top: 24px;
       position: relative;
       z-index: 1;
-      text-align: center;
     }
 
-    .tagline h2 {
-      font-size: 26px; font-weight: 700;
-      color: var(--white);
-      line-height: 1.2;
-    }
-
-    .tagline h2 span {
-      color: var(--purple-pale);
-    }
-
-    .tagline p {
-      margin-top: 10px;
-      font-size: 14px; color: rgba(199,170,255,0.85);
+    .depoimento p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      font-style: italic;
       line-height: 1.6;
     }
 
-    /* ── PAINEL DIREITO ── */
-    .right-panel {
-      flex: 0 0 50%;
-      background: var(--off-white);
+    .depoimento-autor {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .depoimento-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #9f67f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .depoimento-nome {
+      font-size: 12px;
+      color: rgba(199,170,255,0.8);
+      font-weight: 500;
+    }
+
+    /* lado direito - formulário */
+    .lado-direito {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 40px 24px;
     }
 
-    /* Card do formulário */
-    .form-card {
-      background: var(--white);
+    .card-form {
+      background: white;
       border-radius: 20px;
-      padding: 48px 40px 40px;
       width: 100%;
-      max-width: 432px;
-      box-shadow: 0 4px 6px rgba(124,58,237,0.06), 0 12px 40px rgba(124,58,237,0.08);
-      position: relative;
+      max-width: 520px;
+      box-shadow: 0 4px 24px rgba(124,58,237,0.1);
+      overflow: hidden;
     }
 
-    /* Logo centralizado no topo do card */
-    .card-logo {
-      position: absolute;
-      top: -24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 48px; height: 48px;
-      background: var(--purple);
+    .barra-progresso {
+      height: 5px;
+      background: #d9d2ef;
+    }
+
+    .barra-progresso-fill {
+      height: 100%;
+      width: 50%;
+      background: linear-gradient(90deg, #7c3aed, #9f67f4);
+    }
+
+    .form-conteudo {
+      padding: 36px 40px 40px;
+    }
+
+    .logo-card {
+      width: 48px;
+      height: 48px;
+      background: #7c3aed;
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; font-weight: 700; color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      margin: 0 auto 20px;
       box-shadow: 0 4px 16px rgba(124,58,237,0.35);
     }
 
-    .form-card h1 {
+    .passo-indicador {
       text-align: center;
-      font-size: 26px; font-weight: 700;
-      color: var(--dark);
-      margin-top: 16px;
+      font-size: 12px;
+      color: #7f72a6;
+      margin-bottom: 4px;
     }
 
-    .form-card .subtitle {
+    .card-form h1 {
       text-align: center;
-      font-size: 15px; font-weight: 600;
-      color: var(--dark);
-      margin-top: 4px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1233;
     }
 
-    .form-card .sub2 {
+    .card-form .descricao {
       text-align: center;
       font-size: 13px;
-      color: var(--muted);
+      color: #7f72a6;
       margin-top: 6px;
+      margin-bottom: 20px;
+      line-height: 1.5;
     }
 
-    .divider-line {
-      height: 1px;
-      background: var(--border);
+    hr {
+      border: none;
+      border-top: 1px solid #d9d2ef;
       margin: 20px 0;
     }
 
-    /* Campos */
-    .field {
-      margin-bottom: 18px;
+    .duas-colunas {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
     }
 
-    .field label {
+    .campo {
+      margin-bottom: 16px;
+    }
+
+    .campo label {
       display: block;
-      font-size: 12px; font-weight: 500;
-      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      color: #7f72a6;
       margin-bottom: 6px;
     }
 
-    .input-wrap {
-      position: relative;
-    }
-
-    .field input {
+    .campo input {
       width: 100%;
       height: 46px;
-      background: var(--input-bg);
-      border: 1.5px solid var(--border);
+      background: #f5f3fd;
+      border: 1.5px solid #d9d2ef;
       border-radius: 10px;
       padding: 0 16px;
-      font-size: 14px; font-family: 'Inter', sans-serif;
-      color: var(--dark);
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      color: #1a1233;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .field input:focus {
-      border-color: var(--purple);
+    .campo input:focus {
+      border-color: #7c3aed;
       box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
     }
 
-    .field input::placeholder { color: rgba(127,114,166,0.5); }
+    .campo input::placeholder {
+      color: rgba(127,114,166,0.5);
+    }
 
-    .toggle-pass {
+    .campo-senha {
+      position: relative;
+    }
+
+    .btn-mostrar {
       position: absolute;
-      right: 14px; top: 50%;
+      right: 14px;
+      top: 50%;
       transform: translateY(-50%);
-      font-size: 12px; font-weight: 500;
-      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      color: #a07bf0;
       cursor: pointer;
       user-select: none;
     }
 
-    .field-row {
+    .botoes {
       display: flex;
-      justify-content: flex-end;
-      margin-top: 6px;
+      gap: 12px;
+      margin-top: 24px;
     }
 
-    .forgot {
-      font-size: 12px; font-weight: 500;
-      color: var(--accent);
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .forgot:hover { text-decoration: underline; }
-
-    /* Botão entrar */
-    .btn-primary {
-      width: 100%;
+    .btn-voltar {
+      width: 130px;
       height: 50px;
-      background: var(--purple);
-      color: var(--white);
-      border: none; border-radius: 12px;
-      font-size: 16px; font-weight: 600;
+      background: #f5f3fd;
+      border: 1.5px solid #d9d2ef;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      color: #7f72a6;
+      cursor: pointer;
+    }
+
+    .btn-voltar:hover {
+      background: #ece8fb;
+    }
+
+    .btn-cadastrar {
+      flex: 1;
+      height: 50px;
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
       font-family: 'Inter', sans-serif;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      margin-top: 8px;
-      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
       box-shadow: 0 4px 16px rgba(124,58,237,0.3);
+      transition: background 0.2s, transform 0.1s;
     }
 
-    .btn-primary::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 50%;
-      background: rgba(255,255,255,0.12);
-      border-radius: 12px 12px 0 0;
-      pointer-events: none;
-    }
-
-    .btn-primary:hover {
+    .btn-cadastrar:hover {
       background: #6d28d9;
-      box-shadow: 0 6px 20px rgba(124,58,237,0.4);
       transform: translateY(-1px);
     }
 
-    .btn-primary:active { transform: translateY(0); }
-
-    /* Divisor OU */
-    .or-divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 20px 0;
-    }
-
-    .or-divider span {
-      flex: 1; height: 1px;
-      background: var(--border);
-    }
-
-    .or-divider p {
-      font-size: 13px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    /* Botão Google */
-    .btn-google {
-      width: 100%;
-      height: 44px;
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      gap: 10px;
-      font-size: 14px; font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      color: var(--dark);
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-    }
-
-    .btn-google:hover {
-      background: #ede9fb;
-      border-color: var(--purple-light);
-    }
-
-    .google-icon {
-      width: 18px; height: 18px;
-      flex-shrink: 0;
-    }
-
-    /* Footer do card */
-    .card-footer {
-      margin-top: 20px;
+    .rodape-card {
       text-align: center;
-    }
-
-    .card-footer p {
+      margin-top: 20px;
       font-size: 13px;
-      color: var(--muted);
+      color: #7f72a6;
     }
 
-    .card-footer a {
-      color: var(--purple);
+    .rodape-card a {
+      color: #7c3aed;
       font-weight: 600;
       text-decoration: none;
     }
 
-    .card-footer a:hover { text-decoration: underline; }
+    .rodape-card a:hover {
+      text-decoration: underline;
+    }
 
-    /* ── RESPONSIVO ── */
-    @media (max-width: 768px) {
-      .left-panel { display: none; }
-      .right-panel { flex: 1; }
+    @media (max-width: 900px) {
+      .lado-esquerdo {
+        display: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .duas-colunas {
+        grid-template-columns: 1fr;
+      }
+      .form-conteudo {
+        padding: 28px 20px;
+      }
     }
   </style>
 </head>
 <body>
-<div class="page">
 
-  <!-- PAINEL ESQUERDO -->
-  <div class="left-panel">
-    <div class="dec-circle"></div>
-
+  <div class="lado-esquerdo">
     <div class="logo">
-      <div class="logo-icon">K</div>
-      <span class="logo-name">Kamban</span>
+      <div class="logo-icone">K</div>
+      <span>Kamban</span>
     </div>
 
-    <div class="illustration">
-      <svg viewBox="0 0 420 460" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Sombra do board -->
-        <rect x="54" y="84" width="318" height="230" rx="18" fill="#1a0a3a" opacity="0.35"/>
-        <!-- Board principal -->
-        <rect x="48" y="76" width="318" height="230" rx="18" fill="#ffffff"/>
-        <rect x="48" y="76" width="318" height="40" rx="18" fill="#7c3aed"/>
-        <rect x="48" y="96" width="318" height="20" fill="#7c3aed"/>
-        <!-- Titulo do board -->
-        <rect x="68" y="88" width="80" height="10" rx="5" fill="white" opacity="0.5"/>
-        <rect x="68" y="88" width="50" height="10" rx="5" fill="white" opacity="0.9"/>
-        <!-- Botoes no header -->
-        <circle cx="318" cy="96" r="6" fill="white" opacity="0.4"/>
-        <circle cx="336" cy="96" r="6" fill="white" opacity="0.6"/>
-        <circle cx="354" cy="96" r="6" fill="#a78bfa" opacity="0.9"/>
-        <!-- Coluna A Fazer -->
-        <rect x="64" y="128" width="86" height="14" rx="4" fill="#ede9fe"/>
-        <rect x="64" y="128" width="44" height="14" rx="4" fill="#8b5cf6" opacity="0.3"/>
-        <text x="72" y="139" font-family="sans-serif" font-size="9" font-weight="700" fill="#6d28d9">A Fazer</text>
-        <rect x="64" y="150" width="86" height="44" rx="8" fill="#f5f3ff"/>
-        <rect x="64" y="150" width="86" height="4" rx="2" fill="#8b5cf6"/>
-        <rect x="70" y="162" width="60" height="6" rx="3" fill="#c4b5fd"/>
-        <rect x="70" y="174" width="40" height="5" rx="2" fill="#ddd6fe"/>
-        <rect x="64" y="202" width="86" height="44" rx="8" fill="#f5f3ff"/>
-        <rect x="64" y="202" width="86" height="4" rx="2" fill="#ec4899"/>
-        <rect x="70" y="214" width="52" height="6" rx="3" fill="#c4b5fd"/>
-        <rect x="70" y="226" width="35" height="5" rx="2" fill="#ddd6fe"/>
-        <rect x="64" y="254" width="86" height="44" rx="8" fill="#f5f3ff"/>
-        <rect x="64" y="254" width="86" height="4" rx="2" fill="#f59e0b"/>
-        <rect x="70" y="266" width="48" height="6" rx="3" fill="#c4b5fd"/>
-        <rect x="70" y="278" width="55" height="5" rx="2" fill="#ddd6fe"/>
-        <!-- Coluna Fazendo -->
-        <rect x="166" y="128" width="86" height="14" rx="4" fill="#ede9fe"/>
-        <rect x="166" y="128" width="52" height="14" rx="4" fill="#7c3aed" opacity="0.25"/>
-        <text x="172" y="139" font-family="sans-serif" font-size="9" font-weight="700" fill="#6d28d9">Fazendo</text>
-        <rect x="166" y="150" width="86" height="56" rx="8" fill="#ede9fe"/>
-        <rect x="166" y="150" width="86" height="4" rx="2" fill="#7c3aed"/>
-        <rect x="172" y="162" width="55" height="6" rx="3" fill="#8b5cf6"/>
-        <rect x="172" y="174" width="65" height="5" rx="2" fill="#c4b5fd"/>
-        <rect x="172" y="186" width="68" height="5" rx="2" fill="#ddd6fe"/>
-        <rect x="172" y="186" width="46" height="5" rx="2" fill="#7c3aed"/>
-        <rect x="166" y="214" width="86" height="56" rx="8" fill="#ede9fe"/>
-        <rect x="166" y="214" width="86" height="4" rx="2" fill="#06b6d4"/>
-        <rect x="172" y="226" width="60" height="6" rx="3" fill="#8b5cf6"/>
-        <rect x="172" y="238" width="40" height="5" rx="2" fill="#c4b5fd"/>
-        <rect x="172" y="250" width="68" height="5" rx="2" fill="#ddd6fe"/>
-        <rect x="172" y="250" width="28" height="5" rx="2" fill="#06b6d4"/>
-        <!-- Coluna Feito -->
-        <rect x="268" y="128" width="82" height="14" rx="4" fill="#d1fae5"/>
-        <rect x="268" y="128" width="42" height="14" rx="4" fill="#10b981" opacity="0.3"/>
-        <text x="276" y="139" font-family="sans-serif" font-size="9" font-weight="700" fill="#065f46">Feito</text>
-        <rect x="268" y="150" width="82" height="44" rx="8" fill="#ecfdf5"/>
-        <rect x="268" y="150" width="82" height="4" rx="2" fill="#10b981"/>
-        <rect x="274" y="162" width="55" height="6" rx="3" fill="#6ee7b7"/>
-        <rect x="274" y="174" width="38" height="5" rx="2" fill="#a7f3d0"/>
-        <rect x="268" y="202" width="82" height="44" rx="8" fill="#ecfdf5"/>
-        <rect x="268" y="202" width="82" height="4" rx="2" fill="#10b981"/>
-        <rect x="274" y="214" width="45" height="6" rx="3" fill="#6ee7b7"/>
-        <rect x="274" y="226" width="60" height="5" rx="2" fill="#a7f3d0"/>
-        <circle cx="338" cy="240" r="8" fill="#10b981"/>
-        <text x="333" y="244" font-family="sans-serif" font-size="10" font-weight="900" fill="white">✓</text>
-        <rect x="268" y="254" width="82" height="44" rx="8" fill="#ecfdf5"/>
-        <rect x="268" y="254" width="82" height="4" rx="2" fill="#10b981"/>
-        <rect x="274" y="266" width="50" height="6" rx="3" fill="#6ee7b7"/>
-        <rect x="274" y="278" width="33" height="5" rx="2" fill="#a7f3d0"/>
-        <circle cx="338" cy="292" r="8" fill="#10b981"/>
-        <text x="333" y="296" font-family="sans-serif" font-size="10" font-weight="900" fill="white">✓</text>
-        <!-- Personagem -->
-        <ellipse cx="210" cy="452" rx="55" ry="8" fill="#1a0a3a" opacity="0.25"/>
-        <rect x="188" y="400" width="18" height="48" rx="9" fill="#7c3aed"/>
-        <rect x="212" y="400" width="18" height="48" rx="9" fill="#7c3aed"/>
-        <ellipse cx="197" cy="448" rx="14" ry="7" fill="#2d1060"/>
-        <ellipse cx="221" cy="448" rx="14" ry="7" fill="#2d1060"/>
-        <rect x="174" y="300" width="70" height="110" rx="24" fill="#8b5cf6"/>
-        <rect x="193" y="300" width="32" height="30" rx="6" fill="#7c3aed"/>
-        <polygon points="209,304 213,316 209,328 205,316" fill="#ec4899"/>
-        <rect x="144" y="280" width="18" height="60" rx="9" fill="#8b5cf6" transform="rotate(-30 144 280)"/>
-        <circle cx="132" cy="270" r="12" fill="#fbbf24"/>
-        <text x="124" y="275" font-family="sans-serif" font-size="14" fill="#fff">★</text>
-        <rect x="244" y="300" width="18" height="58" rx="9" fill="#8b5cf6" transform="rotate(20 244 300)"/>
-        <circle cx="278" cy="320" r="12" fill="#fbbf24"/>
-        <ellipse cx="288" cy="316" rx="7" ry="5" fill="#fbbf24" transform="rotate(-20 288 316)"/>
-        <rect x="200" y="270" width="18" height="24" rx="8" fill="#fbbf24"/>
-        <ellipse cx="209" cy="240" rx="52" ry="54" fill="#fbbf24"/>
-        <ellipse cx="209" cy="194" rx="44" ry="22" fill="#6d28d9"/>
-        <ellipse cx="180" cy="208" rx="14" ry="22" fill="#6d28d9"/>
-        <ellipse cx="238" cy="208" rx="14" ry="22" fill="#6d28d9"/>
-        <ellipse cx="209" cy="190" rx="36" ry="16" fill="#7c3aed"/>
-        <ellipse cx="226" cy="200" rx="12" ry="18" fill="#6d28d9"/>
-        <ellipse cx="192" cy="238" rx="14" ry="16" fill="white"/>
-        <ellipse cx="192" cy="240" rx="9" ry="10" fill="#6d28d9"/>
-        <ellipse cx="192" cy="240" rx="5" ry="6" fill="#1a0a3a"/>
-        <ellipse cx="189" cy="237" rx="2.5" ry="3" fill="white"/>
-        <rect x="180" y="220" width="24" height="5" rx="2.5" fill="#92400e" transform="rotate(-10 180 220)"/>
-        <ellipse cx="226" cy="238" rx="14" ry="16" fill="white"/>
-        <ellipse cx="226" cy="240" rx="9" ry="10" fill="#6d28d9"/>
-        <ellipse cx="226" cy="240" rx="5" ry="6" fill="#1a0a3a"/>
-        <ellipse cx="223" cy="237" rx="2.5" ry="3" fill="white"/>
-        <rect x="214" y="218" width="24" height="5" rx="2.5" fill="#92400e" transform="rotate(8 214 218)"/>
-        <ellipse cx="178" cy="256" rx="10" ry="7" fill="#f87171" opacity="0.45"/>
-        <ellipse cx="240" cy="256" rx="10" ry="7" fill="#f87171" opacity="0.45"/>
-        <path d="M 192 262 Q 209 282 226 262" stroke="#92400e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <path d="M 196 264 Q 209 278 222 264" fill="white"/>
-        <ellipse cx="209" cy="254" rx="5" ry="3.5" fill="#e59700"/>
-        <ellipse cx="157" cy="240" rx="9" ry="12" fill="#fbbf24"/>
-        <ellipse cx="157" cy="240" rx="5" ry="7" fill="#f59e0b"/>
-        <ellipse cx="261" cy="240" rx="9" ry="12" fill="#fbbf24"/>
-        <ellipse cx="261" cy="240" rx="5" ry="7" fill="#f59e0b"/>
-        <!-- Balao de fala -->
-        <rect x="280" y="155" width="128" height="52" rx="14" fill="white"/>
-        <polygon points="290,207 310,207 300,224" fill="white"/>
-        <text x="294" y="177" font-family="sans-serif" font-size="11" font-weight="700" fill="#6d28d9">Vamos entregar</text>
-        <text x="298" y="194" font-family="sans-serif" font-size="11" font-weight="700" fill="#6d28d9">tudo no prazo!</text>
-        <!-- Estrelinhas -->
-        <text x="44" y="170" font-family="sans-serif" font-size="18" fill="#a78bfa" opacity="0.7">✦</text>
-        <text x="370" y="130" font-family="sans-serif" font-size="14" fill="#f0abfc" opacity="0.8">✦</text>
-        <text x="28" y="340" font-family="sans-serif" font-size="10" fill="#c4b5fd" opacity="0.6">✦</text>
-        <text x="398" y="300" font-family="sans-serif" font-size="22" fill="#818cf8" opacity="0.5">✦</text>
-        <text x="80" y="440" font-family="sans-serif" font-size="12" fill="#a78bfa" opacity="0.5">✦</text>
-        <text x="340" y="420" font-family="sans-serif" font-size="16" fill="#c4b5fd" opacity="0.5">✦</text>
+    <h2 class="titulo-lado">Criar conta</h2>
+    <p class="subtitulo-lado">Preencha as informações<br>para começar gratuitamente.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-numero feito">✓</div>
+        <div class="step-texto">
+          <div class="step-nome">Dados pessoais</div>
+          <div class="step-desc">Nome e contato</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-numero atual">2</div>
+        <div class="step-texto">
+          <div class="step-nome">Sua empresa</div>
+          <div class="step-desc">Organização e cargo</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-numero pendente">3</div>
+        <div class="step-texto">
+          <div class="step-nome apagado">Plano</div>
+          <div class="step-desc">Escolha seu plano</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-numero pendente">4</div>
+        <div class="step-texto">
+          <div class="step-nome apagado">Confirmação</div>
+          <div class="step-desc">Revise e confirme</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ilustracao">
+      <svg viewBox="0 0 420 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.18">
+          <rect x="370" y="20" width="16" height="36" rx="8" fill="#c4b5fd"/>
+          <polygon points="370,20 386,20 378,4" fill="#a78bfa"/>
+          <ellipse cx="378" cy="58" rx="8" ry="5" fill="#f59e0b" opacity="0.8"/>
+        </g>
+        <g opacity="0.13">
+          <rect x="18" y="260" width="12" height="26" rx="6" fill="#c4b5fd"/>
+          <polygon points="18,260 30,260 24,246" fill="#a78bfa"/>
+          <ellipse cx="24" cy="288" rx="6" ry="4" fill="#f59e0b" opacity="0.8"/>
+        </g>
+        <rect x="56" y="14" width="168" height="214" rx="14" fill="#1a0a3a" opacity="0.28"/>
+        <rect x="50" y="6" width="168" height="214" rx="14" fill="white"/>
+        <rect x="50" y="6" width="168" height="36" rx="14" fill="#7c3aed"/>
+        <rect x="50" y="24" width="168" height="18" fill="#7c3aed"/>
+        <rect x="66" y="14" width="80" height="10" rx="5" fill="white" opacity="0.4"/>
+        <rect x="66" y="14" width="48" height="10" rx="5" fill="white" opacity="0.85"/>
+        <rect x="118" y="0" width="32" height="22" rx="6" fill="#6d28d9"/>
+        <rect x="122" y="-4" width="24" height="12" rx="6" fill="#4c1d95"/>
+        <rect x="66" y="54" width="16" height="16" rx="4" fill="#7c3aed"/>
+        <text x="67" y="67" font-family="sans-serif" font-size="11" font-weight="900" fill="white">✓</text>
+        <rect x="90" y="58" width="88" height="7" rx="3" fill="#c4b5fd"/>
+        <rect x="90" y="69" width="60" height="5" rx="2" fill="#ede9fe"/>
+        <rect x="66" y="82" width="16" height="16" rx="4" fill="#7c3aed"/>
+        <text x="67" y="95" font-family="sans-serif" font-size="11" font-weight="900" fill="white">✓</text>
+        <rect x="90" y="86" width="100" height="7" rx="3" fill="#c4b5fd"/>
+        <rect x="90" y="97" width="72" height="5" rx="2" fill="#ede9fe"/>
+        <rect x="66" y="110" width="16" height="16" rx="4" fill="#ede9fe"/>
+        <rect x="66" y="110" width="16" height="16" rx="4" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <rect x="90" y="114" width="76" height="7" rx="3" fill="#ddd6fe"/>
+        <rect x="90" y="132" width="100" height="5" rx="2" fill="#ede9fe"/>
+        <rect x="90" y="132" width="62" height="5" rx="2" fill="#8b5cf6"/>
+        <rect x="66" y="148" width="16" height="16" rx="4" fill="#ede9fe"/>
+        <rect x="66" y="148" width="16" height="16" rx="4" fill="none" stroke="#c4b5fd" stroke-width="2"/>
+        <rect x="90" y="152" width="88" height="7" rx="3" fill="#ede9fe"/>
+        <rect x="66" y="178" width="16" height="16" rx="4" fill="#ede9fe"/>
+        <rect x="66" y="178" width="16" height="16" rx="4" fill="none" stroke="#c4b5fd" stroke-width="2"/>
+        <rect x="90" y="182" width="70" height="7" rx="3" fill="#ede9fe"/>
+        <ellipse cx="298" cy="328" rx="52" ry="8" fill="#1a0a3a" opacity="0.2"/>
+        <rect x="278" y="270" width="18" height="54" rx="9" fill="#6d28d9"/>
+        <rect x="302" y="270" width="18" height="54" rx="9" fill="#6d28d9"/>
+        <ellipse cx="287" cy="324" rx="15" ry="7" fill="#2d1060"/>
+        <ellipse cx="311" cy="324" rx="15" ry="7" fill="#2d1060"/>
+        <rect x="264" y="170" width="72" height="108" rx="24" fill="#8b5cf6"/>
+        <rect x="282" y="170" width="36" height="28" rx="6" fill="#7c3aed"/>
+        <polygon points="300,174 308,182 300,190 292,182" fill="#fbbf24"/>
+        <rect x="220" y="160" width="18" height="64" rx="9" fill="#8b5cf6" transform="rotate(15 220 160)"/>
+        <circle cx="208" cy="156" r="13" fill="#fbbf24"/>
+        <rect x="336" y="146" width="18" height="62" rx="9" fill="#8b5cf6" transform="rotate(-25 336 146)"/>
+        <circle cx="364" cy="126" r="13" fill="#fbbf24"/>
+        <ellipse cx="372" cy="116" rx="5" ry="8" fill="#fbbf24" transform="rotate(-20 372 116)"/>
+        <ellipse cx="376" cy="128" rx="5" ry="8" fill="#fbbf24" transform="rotate(10 376 128)"/>
+        <rect x="291" y="140" width="18" height="24" rx="8" fill="#fbbf24"/>
+        <ellipse cx="300" cy="110" rx="52" ry="54" fill="#fbbf24"/>
+        <ellipse cx="300" cy="62" rx="46" ry="22" fill="#4c1d95"/>
+        <ellipse cx="270" cy="76" rx="14" ry="22" fill="#4c1d95"/>
+        <ellipse cx="330" cy="76" rx="14" ry="22" fill="#4c1d95"/>
+        <ellipse cx="300" cy="52" rx="22" ry="28" fill="#6d28d9"/>
+        <ellipse cx="312" cy="56" rx="12" ry="20" fill="#4c1d95"/>
+        <ellipse cx="283" cy="106" rx="13" ry="14" fill="white"/>
+        <path d="M 272 106 Q 283 116 294 106" stroke="#1a0a3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="272" y="88" width="22" height="5" rx="2.5" fill="#92400e" transform="rotate(-8 272 88)"/>
+        <ellipse cx="317" cy="106" rx="14" ry="15" fill="white"/>
+        <ellipse cx="317" cy="108" rx="9" ry="10" fill="#6d28d9"/>
+        <ellipse cx="317" cy="108" rx="5" ry="6" fill="#1a0a3a"/>
+        <ellipse cx="314" cy="105" rx="2.5" ry="3" fill="white"/>
+        <rect x="308" y="86" width="22" height="5" rx="2.5" fill="#92400e" transform="rotate(-14 308 86)"/>
+        <ellipse cx="270" cy="124" rx="10" ry="7" fill="#f87171" opacity="0.4"/>
+        <ellipse cx="330" cy="124" rx="10" ry="7" fill="#f87171" opacity="0.4"/>
+        <path d="M 282 132 Q 300 152 318 132" stroke="#92400e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M 286 134 Q 300 148 314 134" fill="white"/>
+        <ellipse cx="300" cy="124" rx="5" ry="3.5" fill="#e59700"/>
+        <ellipse cx="248" cy="110" rx="9" ry="12" fill="#fbbf24"/>
+        <ellipse cx="248" cy="110" rx="5" ry="7" fill="#f59e0b"/>
+        <ellipse cx="352" cy="110" rx="9" ry="12" fill="#fbbf24"/>
+        <ellipse cx="352" cy="110" rx="5" ry="7" fill="#f59e0b"/>
+        <rect x="30" y="36" width="148" height="56" rx="14" fill="white"/>
+        <polygon points="140,92 160,92 148,108" fill="white"/>
+        <text x="44" y="60" font-family="sans-serif" font-size="11" font-weight="700" fill="#6d28d9">Crie sua conta</text>
+        <text x="44" y="76" font-family="sans-serif" font-size="11" font-weight="700" fill="#6d28d9">e comece agora!</text>
+        <rect x="350" y="56" width="8" height="8" rx="2" fill="#fbbf24" transform="rotate(20 350 56)"/>
+        <rect x="368" y="86" width="6" height="6" rx="1" fill="#ec4899" transform="rotate(-15 368 86)"/>
+        <rect x="240" y="36" width="7" height="7" rx="2" fill="#10b981" transform="rotate(35 240 36)"/>
+        <circle cx="360" cy="106" r="4" fill="#06b6d4" opacity="0.8"/>
+        <circle cx="232" cy="106" r="3" fill="#ec4899" opacity="0.7"/>
+        <text x="34" y="200" font-family="sans-serif" font-size="18" fill="#a78bfa" opacity="0.6">✦</text>
+        <text x="390" y="160" font-family="sans-serif" font-size="14" fill="#f0abfc" opacity="0.7">✦</text>
+        <text x="398" y="280" font-family="sans-serif" font-size="16" fill="#818cf8" opacity="0.5">✦</text>
       </svg>
     </div>
 
-    <div class="tagline">
-      <h2>Organize. Colabore.<br><span>Entregue sempre.</span></h2>
-      <p>A plataforma Kanban que seu time<br>vai amar usar todo dia.</p>
+    <div class="depoimento">
+      <p>"Aumentamos a produtividade do time em 40% no primeiro mês com Kamban."</p>
+      <div class="depoimento-autor">
+        <div class="depoimento-avatar">CP</div>
+        <span class="depoimento-nome">Carla Pereira — CTO, NovaTech</span>
+      </div>
     </div>
   </div>
 
-  <!-- PAINEL DIREITO -->
-  <div class="right-panel">
-    <div class="form-card">
+  <div class="lado-direito">
+    <div class="card-form">
 
-      <div class="card-logo">K</div>
+      <div class="barra-progresso">
+        <div class="barra-progresso-fill"></div>
+      </div>
 
-      <h1>Olá!</h1>
-      <p class="subtitle">Seja bem-vindo de volta!</p>
-      <p class="sub2">Entre na sua conta para continuar</p>
+      <div class="form-conteudo">
+        <div class="logo-card">K</div>
 
-      <div class="divider-line"></div>
+        <p class="passo-indicador">Passo 2 de 4</p>
+        <h1>Criar conta</h1>
+        <p class="descricao">Preencha os dados abaixo para começar gratuitamente.</p>
 
-      <form onsubmit="return false;">
+        <hr>
 
-        <div class="field">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" placeholder="username@gmail.com" value="username@gmail.com"/>
-        </div>
+        <form onsubmit="return false;">
 
-        <div class="field">
-          <label for="senha">Senha</label>
-          <div class="input-wrap">
-            <input type="password" id="senha" placeholder="Senha" value="senhasecreta"/>
-            <span class="toggle-pass" onclick="toggleSenha()">Mostrar</span>
+          <div class="duas-colunas">
+            <div class="campo">
+              <label for="nome">Nome</label>
+              <input type="text" id="nome" placeholder="Seu nome">
+            </div>
+            <div class="campo">
+              <label for="sobrenome">Sobrenome</label>
+              <input type="text" id="sobrenome" placeholder="Seu sobrenome">
+            </div>
           </div>
-          <div class="field-row">
-            <a href="#" class="forgot">Esqueceu sua senha?</a>
+
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="seu@email.com">
           </div>
+
+          <div class="campo">
+            <label for="empresa">Organização / Empresa</label>
+            <input type="text" id="empresa" placeholder="Nome da sua empresa (opcional)">
+          </div>
+
+          <div class="duas-colunas">
+            <div class="campo">
+              <label for="senha">Senha</label>
+              <div class="campo-senha">
+                <input type="password" id="senha" placeholder="Mínimo 8 caracteres">
+                <span class="btn-mostrar" onclick="mostrarSenha('senha', this)">Mostrar</span>
+              </div>
+            </div>
+            <div class="campo">
+              <label for="confirmar">Confirmar senha</label>
+              <div class="campo-senha">
+                <input type="password" id="confirmar" placeholder="Repita a senha">
+                <span class="btn-mostrar" onclick="mostrarSenha('confirmar', this)">Mostrar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="botoes">
+            <button type="button" class="btn-voltar" onclick="window.location.href='login.html'">Voltar</button>
+            <button type="submit" class="btn-cadastrar">Cadastrar</button>
+          </div>
+
+        </form>
+
+        <div class="rodape-card">
+          <p>Já tem uma conta? <a href="login.html">Fazer login</a></p>
         </div>
-
-        <button type="submit" class="btn-primary">Entrar</button>
-
-        <div class="or-divider">
-          <span></span>
-          <p>ou</p>
-          <span></span>
-        </div>
-
-        <button type="button" class="btn-google">
-          <!-- Ícone Google simplificado -->
-          <svg class="google-icon" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
-            <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-          </svg>
-          Continuar com Google
-        </button>
-
-      </form>
-
-      <div class="divider-line" style="margin-top:20px;"></div>
-
-      <div class="card-footer">
-        <p>Não possui uma conta ainda? <a href="cadastro.html">Cadastre-se aqui</a></p>
       </div>
 
     </div>
   </div>
 
-</div>
-
-<script>
-  function toggleSenha() {
-    var input = document.getElementById('senha');
-    var btn = document.querySelector('.toggle-pass');
-    if (input.type === 'password') {
-      input.type = 'text';
-      btn.textContent = 'Ocultar';
-    } else {
-      input.type = 'password';
-      btn.textContent = 'Mostrar';
+  <script>
+    function mostrarSenha(id, el) {
+      var input = document.getElementById(id);
+      if (input.type === 'password') {
+        input.type = 'text';
+        el.textContent = 'Ocultar';
+      } else {
+        input.type = 'password';
+        el.textContent = 'Mostrar';
+      }
     }
-  }
-</script>
+  </script>
+
 </body>
 </html>
