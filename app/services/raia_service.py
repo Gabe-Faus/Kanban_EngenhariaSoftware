@@ -6,15 +6,15 @@ from psycopg2 import Error
 from datetime import datetime
 
 class RaiaService:
-    def criar_raia(qtd_max, nome, id_quadro):
+    def criar_raia(qtd_max, nome, id_quadro, ordem=0):
         try:
             db = Database()
             query = """
-                INSERT INTO RAIA (QTD_MAX, NOME, ID_QUADRO)
-                VALUES (%s, %s, %s)
+                INSERT INTO RAIA (QTD_MAX, NOME, ID_QUADRO, ORDEM)
+                VALUES (%s, %s, %s, %s)
                 RETURNING ID_RAIA, QTD_MAX, NOME, ID_QUADRO
             """
-            db.cursor.execute(query, (qtd_max, nome, id_quadro))
+            db.cursor.execute(query, (qtd_max, nome, id_quadro, ordem))
             db.commit()
 
             result = db.cursor.fetchone()
@@ -59,7 +59,7 @@ class RaiaService:
     def listar_raias_por_quadro(id_quadro):
         try:
             db = Database()
-            query = "SELECT ID_RAIA, QTD_MAX, NOME, ID_QUADRO FROM RAIA WHERE ID_QUADRO = %s ORDER BY ID_RAIA"
+            query = "SELECT ID_RAIA, QTD_MAX, NOME, ID_QUADRO FROM RAIA WHERE ID_QUADRO = %s ORDER BY ORDEM, ID_RAIA"
             db.cursor.execute(query, (id_quadro,))
 
             raiais = []
@@ -72,3 +72,33 @@ class RaiaService:
         except Error as e:
             print(f"Error listing raia for quadro {id_quadro}: {e}")
             return []
+
+    def atualizar_raia(raia_id, nome=None):
+        try:
+            db = Database()
+            if nome:
+                db.cursor.execute("UPDATE RAIA SET NOME = %s WHERE ID_RAIA = %s", (nome.strip(), raia_id))
+            db.commit()
+            return True
+        except Error as e:
+            print(f"Error updating raia: {e}")
+            db.conn.rollback()
+            return False
+
+    def contar_raias_por_quadro(id_quadro):
+        try:
+            db = Database()
+            db.cursor.execute("SELECT COUNT(*) FROM RAIA WHERE ID_QUADRO = %s", (id_quadro,))
+            return db.cursor.fetchone()[0]
+        except Error as e:
+            print(f"Error counting raias: {e}")
+            return 0
+
+    def obter_proxima_ordem(id_quadro):
+        try:
+            db = Database()
+            db.cursor.execute("SELECT COALESCE(MAX(ORDEM), -1) + 1 FROM RAIA WHERE ID_QUADRO = %s", (id_quadro,))
+            return db.cursor.fetchone()[0]
+        except Error as e:
+            print(f"Error getting next ordem: {e}")
+            return 0

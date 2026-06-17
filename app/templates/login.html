@@ -459,13 +459,13 @@
 
         <div class="campo">
           <label for="email">E-mail</label>
-          <input type="email" id="email" placeholder="username@gmail.com">
+          <input type="email" id="email" name="email" placeholder="username@gmail.com">
         </div>
 
         <div class="campo">
           <label for="senha">Senha</label>
           <div class="campo-senha">
-            <input type="password" id="senha" placeholder="Sua senha">
+            <input type="password" id="senha" name="senha" placeholder="Sua senha">
             <span class="btn-mostrar" onclick="mostrarSenha()">Mostrar</span>
           </div>
           <div class="linha-esqueceu">
@@ -480,7 +480,7 @@
       <hr style="margin-top: 20px;">
 
       <div class="rodape-card">
-        <p>Não possui uma conta ainda? <a href="cadastro.html">Cadastre-se aqui</a></p>
+        <p>Não possui uma conta ainda? <a href="{{ url_for('cadastro') }}">Cadastre-se aqui</a></p>
       </div>
 
     </div>

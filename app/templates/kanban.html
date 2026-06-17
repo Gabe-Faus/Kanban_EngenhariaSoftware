@@ -120,11 +120,48 @@
       border-left: 3px solid #7c3aed;
     }
 
+    .projeto-atual .proj-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
     .projeto-atual h4 {
       font-size: 14px;
       font-weight: 700;
       color: #1a1233;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
+
+    .btn-editar-quadro {
+      width: 26px;
+      height: 26px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .btn-editar-quadro:hover { background: #d8caf5; }
+
+    .btn-editar-quadro svg {
+      width: 14px;
+      height: 14px;
+      stroke: #7f72a6;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .btn-editar-quadro:hover svg { stroke: #6d28d9; }
 
     .projeto-atual p {
       font-size: 12px;
@@ -303,6 +340,21 @@
       cursor: pointer;
     }
 
+    .btn-logout {
+      font-size: 13px;
+      font-weight: 600;
+      color: #9a8fbe;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-logout:hover {
+      background: #f5f3fd;
+      color: #be185d;
+    }
+
     .main {
       padding: 26px 32px 40px;
       flex: 1;
@@ -375,54 +427,99 @@
       transform: translateY(-1px);
     }
 
-    .board {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      flex: 1;
-      align-items: start;
-    }
-
-    .coluna {
-      background: #f1ecfb;
-      border-radius: 16px;
-      padding: 16px;
+    .board-matrix {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
+      flex: 1;
+      align-items: stretch;
     }
 
-    .coluna-topo {
+    .matrix-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .matrix-label {
+      width: 100px;
+      min-width: 100px;
+      background: #e8e0f7;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-weight: 700;
+      font-size: 12px;
+      color: #1a1233;
+      text-align: center;
+    }
+
+    .matrix-label .swimlane-actions {
+      display: flex;
+      gap: 3px;
+      margin-top: 2px;
+    }
+
+    .matrix-col-header {
+      flex: 1;
+      background: #f1ecfb;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1a1233;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      padding: 2px 4px 6px;
     }
 
     .coluna-bola {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-    }
-
-    .coluna-topo h2 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1a1233;
-      flex: 1;
+      display: inline-block;
+      flex-shrink: 0;
     }
 
     .coluna-count {
       font-size: 12px;
-      font-weight: 700;
-      color: #7f72a6;
-      background: #ffffff;
-      width: 24px;
-      height: 24px;
-      border-radius: 7px;
+      font-weight: 600;
+      color: #9a8fbe;
+      background: #e2d6f7;
+      padding: 1px 8px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .coluna-wip {
+      font-size: 12px;
+      font-weight: 600;
+      color: #7c3aed;
+      cursor: pointer;
+      padding: 1px 6px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+
+    .coluna-wip:hover {
+      background: #d6c8f5;
+    }
+
+    .matrix-cell {
+      flex: 1;
+      background: #f1ecfb;
+      border-radius: 12px;
+      padding: 10px;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 60px;
     }
 
     .tarefa {
@@ -430,14 +527,14 @@
       border-radius: 12px;
       padding: 14px;
       border-left: 3px solid #c4b5fd;
-      box-shadow: 0 1px 4px rgba(124,58,237,0.06);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       cursor: pointer;
-      transition: transform 0.12s, box-shadow 0.12s;
+      transition: transform 0.15s, box-shadow 0.2s;
     }
 
     .tarefa:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(124,58,237,0.12);
+      box-shadow: 0 8px 24px rgba(26,18,51,0.08);
     }
 
     .tarefa-topo {
@@ -520,6 +617,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .tarefa-data {
@@ -532,7 +630,31 @@
     .tarefa-msg {
       font-size: 12px;
       font-weight: 500;
-      color: #9a8fbe;
+      color: #b1a7cc;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tarefa-msg svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .tarefa-metricas {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .tm {
+      font-size: 10px;
+      font-weight: 600;
+      color: #7f72a6;
+      background: #f1ecfb;
+      padding: 2px 6px;
+      border-radius: 4px;
     }
 
     .add-tarefa {
@@ -796,7 +918,8 @@
     }
 
     .modal select,
-    .modal input[type="date"] {
+    .modal input[type="date"],
+    .modal input[type="text"] {
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
@@ -810,7 +933,8 @@
     }
 
     .modal select:focus,
-    .modal input[type="date"]:focus { border-color: #7c3aed; }
+    .modal input[type="date"]:focus,
+    .modal input[type="text"]:focus { border-color: #7c3aed; }
 
     .cores-lista { display: flex; gap: 10px; }
 
@@ -938,10 +1062,6 @@
 
     .btn-salvar:hover { background: #6d28d9; }
 
-    @media (max-width: 980px) {
-      .board { grid-template-columns: 1fr; }
-    }
-
     @media (max-width: 720px) {
       .sidebar { display: none; }
       .topo, .main { padding-left: 18px; padding-right: 18px; }
@@ -955,30 +1075,38 @@
   <div class="layout">
 
     <aside class="sidebar">
-      <a href="projetos.html" class="logo">
+      <a href="{{ url_for('projetos') }}" class="logo">
         <div class="logo-icone">K</div>
         <span>Flowboard</span>
       </a>
 
       <nav class="menu">
-        <a href="projetos.html" class="menu-item"><span class="menu-icone"></span>Boards</a>
-        <a href="#" class="menu-item ativo"><span class="menu-icone"></span>Templates</a>
+        <a href="{{ url_for('projetos') }}" class="menu-item ativo"><span class="menu-icone"></span>Boards</a>
+        <a href="#" class="menu-item"><span class="menu-icone"></span>Templates</a>
         <a href="#" class="menu-item"><span class="menu-icone"></span>Membros</a>
         <a href="#" class="menu-item"><span class="menu-icone"></span>Configs</a>
       </nav>
 
       <div class="secao-titulo">Projeto atual</div>
       <div class="projeto-atual">
-        <h4 id="proj-nome">App E-commerce</h4>
-        <p id="proj-empresa">NovaTech Sistemas</p>
+        <div class="proj-header">
+          <h4 id="proj-nome">{{ quadro.nome }}</h4>
+          <button class="btn-editar-quadro" onclick="abrirModalEditarQuadro()" title="Editar projeto">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+            </svg>
+          </button>
+        </div>
+        <p id="proj-empresa">{{ quadro.empresa }}</p>
         <div class="progresso"><span id="barra-progresso"></span></div>
         <span class="pct" id="texto-progresso">0% concluído</span>
         <div class="mini-membros">
-          <span style="background:#7c3aed;">J</span>
-          <span style="background:#ec4899;">M</span>
-          <span style="background:#14b8a6;">T</span>
-          <span style="background:#f59e0b;">L</span>
-          <span style="background:#ede7fb;color:#6d28d9;">2</span>
+          {% for m in membros[:5] %}
+          <span style="background:{{ m.cor or '#7c3aed' }};">{{ m.iniciais or m.nome[:1].upper() }}</span>
+          {% endfor %}
+          {% if membros|length > 5 %}
+          <span style="background:#ede7fb;color:#6d28d9;">+{{ membros|length - 5 }}</span>
+          {% endif %}
         </div>
       </div>
 
@@ -991,21 +1119,23 @@
     <div class="conteudo">
 
       <header class="topo">
-        <a href="projetos.html" class="logo" style="padding:0;">
+        <a href="{{ url_for('projetos') }}" class="logo" style="padding:0;">
           <div class="logo-icone">K</div>
           <span>Flowboard</span>
         </a>
-        <div class="breadcrumb"><span id="bc-empresa">NovaTech</span> / <b id="bc-projeto">App E-commerce Mobile</b></div>
+        <div class="breadcrumb"><span id="bc-empresa">{{ quadro.empresa }}</span> / <b id="bc-projeto">{{ quadro.nome }}</b></div>
         <div class="topo-acoes">
           <div class="avatares-equipe">
-            <span style="background:#7c3aed;">JS</span>
-            <span style="background:#ec4899;">MA</span>
-            <span style="background:#14b8a6;">TK</span>
-            <span style="background:#f59e0b;">LR</span>
-            <span class="mais">+2</span>
+            {% for m in membros[:4] %}
+            <span style="background:{{ m.cor or '#7c3aed' }};">{{ m.iniciais or m.nome[:2].upper() }}</span>
+            {% endfor %}
+            {% if membros|length > 4 %}
+            <span class="mais">+{{ membros|length - 4 }}</span>
+            {% endif %}
           </div>
           <div class="sino">!<span class="ponto"></span></div>
-          <div class="avatar">JS</div>
+          <a href="{{ url_for('logout') }}" class="btn-logout" title="Sair">Sair</a>
+          <div class="avatar">{{ session.get('usuario_nome', '?')[:2].upper() }}</div>
         </div>
       </header>
 
@@ -1014,11 +1144,12 @@
         <div class="cabecalho">
           <div>
             <h1>Demandas no Kanban</h1>
-            <p class="sub" id="sub-projeto">App E-commerce Mobile &nbsp;&middot;&nbsp; Sprint 3</p>
+            <p class="sub" id="sub-projeto">{{ quadro.nome }}</p>
           </div>
           <div class="acoes-topo">
             <button class="btn-secundario" id="btn-filtrar" onclick="toggleFiltros()">Filtrar</button>
             <button class="btn-secundario" id="btn-agrupar" onclick="alternarAgrupamento()">Agrupar</button>
+            <button class="btn-secundario" onclick="criarRaia()">+ Nova Raia</button>
             <button class="btn-novo" onclick="abrirModalNovo()">+ Nova Tarefa</button>
           </div>
         </div>
@@ -1032,213 +1163,70 @@
           </div>
           <div class="grupo">
             <span class="grupo-label">Responsável:</span>
-            <button class="chip-filtro" data-fresp="JS" onclick="toggleChip(this,'resp')">JS</button>
-            <button class="chip-filtro" data-fresp="MA" onclick="toggleChip(this,'resp')">MA</button>
-            <button class="chip-filtro" data-fresp="TK" onclick="toggleChip(this,'resp')">TK</button>
-            <button class="chip-filtro" data-fresp="LR" onclick="toggleChip(this,'resp')">LR</button>
+            {% for m in membros %}
+            <button class="chip-filtro" data-fresp-id="{{ m.id }}" data-fresp="{{ m.iniciais }}" onclick="toggleChip(this,'resp')">{{ m.iniciais }}</button>
+            {% endfor %}
           </div>
           <button class="limpar" onclick="limparFiltros()">Limpar filtros</button>
         </div>
 
-        <div class="board">
+        <div class="metricas-bar" id="metricas-bar">
+          <div class="metrica-card"><div class="rotulo">WIP</div><div class="valor" id="m-wip">-</div></div>
+          <div class="metrica-card"><div class="rotulo">Throughput</div><div class="valor" id="m-throughput">-</div></div>
+          <div class="metrica-card"><div class="rotulo">Concluídos</div><div class="valor" id="m-concluidos">-</div></div>
+        </div>
+        <div class="board-matrix">
 
-          <div class="coluna">
-            <div class="coluna-topo">
-              <span class="coluna-bola" style="background:#a78bfa;"></span>
-              <h2>A Fazer</h2>
-              <span class="coluna-count">0</span>
-            </div>
-
-            <div class="tarefa" style="border-left-color:#a78bfa;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-alta">Alta</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Criar tela de checkout</h3>
-              <div class="labels">
-                <span class="label">Frontend</span>
-                <span class="label">UX</span>
-              </div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#ec4899;">MA</span>
-                <span class="tarefa-data" data-raw="2026-06-18">18 Jun</span>
-                <span class="tarefa-msg">4 msg</span>
-              </div>
-            </div>
-
-            <div class="tarefa" style="border-left-color:#a78bfa;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-alta">Alta</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Integrar gateway de pagamento</h3>
-              <div class="labels">
-                <span class="label">Backend</span>
-                <span class="label">API</span>
-              </div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#14b8a6;">TK</span>
-                <span class="tarefa-data" data-raw="2026-06-22">22 Jun</span>
-                <span class="tarefa-msg">2 msg</span>
-              </div>
-            </div>
-
-            <div class="tarefa" style="border-left-color:#a78bfa;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-media">Media</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Testes de carga</h3>
-              <div class="labels">
-                <span class="label">DevOps</span>
-              </div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#f59e0b;">LR</span>
-                <span class="tarefa-data" data-raw="2026-06-25">25 Jun</span>
-                <span class="tarefa-msg">1 msg</span>
-              </div>
-            </div>
-
-            <div class="tarefa" style="border-left-color:#a78bfa;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-baixa">Baixa</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Documentar endpoints REST</h3>
-              <div class="labels">
-                <span class="label">Docs</span>
-              </div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#7c3aed;">JS</span>
-                <span class="tarefa-data" data-raw="2026-06-28">28 Jun</span>
-                <span class="tarefa-msg">0 msg</span>
-              </div>
-            </div>
-            
-            <button class="add-tarefa" onclick="abrirModalNovo()">+ Adicionar tarefa</button>
+          <div class="matrix-row header-row">
+            <div class="matrix-label"></div>
+            {% for coluna in colunas %}
+            <div class="matrix-col-header"><span class="coluna-bola" style="background:{{ coluna.cor }};"></span> {{ coluna.nome }} <span class="coluna-count" id="col-count-{{ coluna.id }}">0</span> <span class="coluna-wip" onclick="editarWip({{ coluna.id }}, {{ coluna.qtd_max }})" title="Limite WIP">/{{ coluna.qtd_max }}</span></div>
+            {% endfor %}
           </div>
 
-          <div class="coluna">
-            <div class="coluna-topo">
-              <span class="coluna-bola" style="background:#3b82f6;"></span>
-              <h2>Em Andamento</h2>
-              <span class="coluna-count">0</span>
-            </div>
-
-            <div class="tarefa" style="border-left-color:#3b82f6;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-alta">Alta</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Auth com JWT e refresh token</h3>
-              <div class="labels">
-                <span class="label">Backend</span>
-                <span class="label">Segurança</span>
-              </div>
-              <div class="tarefa-progresso"><span style="width:65%;background:#3b82f6;"></span></div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#f59e0b;">LR</span>
-                <span class="tarefa-data" data-raw="2026-06-12">12 Jun</span>
-                <span class="tarefa-msg">7 msg</span>
+          {% for swimlane in swimlanes %}
+          <div class="matrix-row" data-raia-id="{{ swimlane.id }}">
+            <div class="matrix-label">
+              <div>{{ swimlane.nome }}</div>
+              <div class="swimlane-actions">
+                <span onclick="editarRaia({{ swimlane.id }}, '{{ swimlane.nome }}')" style="cursor:pointer;font-size:11px;color:#b1a7cc;padding:1px 4px;border-radius:4px;" onmouseover="this.style.background='#e7e0f7'" onmouseout="this.style.background='transparent'" title="Editar swimlane">✎</span>
+                <span onclick="excluirRaia({{ swimlane.id }})" style="cursor:pointer;font-size:13px;color:#b1a7cc;padding:1px 4px;border-radius:4px;" onmouseover="this.style.background='#fde7f3';this.style.color='#be185d'" onmouseout="this.style.background='transparent';this.style.color='#b1a7cc'" title="Excluir swimlane">&times;</span>
               </div>
             </div>
-
-            <div class="tarefa" style="border-left-color:#3b82f6;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-alta">Alta</span>
-                <span class="menu-pontos">...</span>
+            {% for coluna in colunas %}
+            <div class="matrix-cell" data-coluna-id="{{ coluna.id }}" data-raia-id="{{ swimlane.id }}">
+              {% for card in swimlane.celulas[coluna.id] %}
+              <div class="tarefa" style="border-left-color:{{ coluna.cor }};" data-id="{{ card.id }}" data-resp-id="{{ card.responsavel_id or '' }}" data-prio="{{ card.prioridade }}" data-criado="{{ card.criado_em }}" data-iniciado="{{ card.iniciado_em }}" data-concluido="{{ card.concluido_em }}" data-lt="{{ card.lead_time_str }}" data-ct="{{ card.cycle_time_str }}" data-desc="{{ card.descricao }}" data-coluna-id="{{ coluna.id }}" data-raia-id="{{ swimlane.id }}">
+                <div class="tarefa-topo">
+                  <span class="prioridade prio-{{ 'feito' if 'feito' in coluna.nome|lower else card.prioridade|lower }}">
+                    {{ 'Feito' if 'feito' in coluna.nome|lower else card.prioridade }}
+                  </span>
+                  <span class="menu-pontos">...</span>
+                </div>
+                <h3>{{ card.titulo }}</h3>
+                <div class="labels">
+                  {% for tag in card.tags or [] %}<span class="label">{{ tag }}</span>{% endfor %}
+                </div>
+                <div class="tarefa-rodape">
+                  <span class="tarefa-avatar" style="background:{{ card.responsavel_cor or '#7c3aed' }};">
+                    {{ card.responsavel_iniciais or '?' }}
+                  </span>
+                  <span class="tarefa-data" data-raw="{{ card.prazo or '' }}">{{ card.prazo or 'Hoje' }}</span>
+                  <span class="tarefa-msg"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> 0</span>
+                </div>
+                <div class="tarefa-metricas">
+                  {% if card.lead_time is not none %}<span class="tm" title="Lead Time">LT {{ card.lead_time }}s</span>{% endif %}
+                  {% if card.cycle_time is not none %}<span class="tm" title="Cycle Time">CT {{ card.cycle_time }}s</span>{% endif %}
+                </div>
               </div>
-              <h3>Listagem de produtos</h3>
-              <div class="labels">
-                <span class="label">Frontend</span>
-              </div>
-              <div class="tarefa-progresso"><span style="width:80%;background:#ec4899;"></span></div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#ec4899;">MA</span>
-                <span class="tarefa-data" data-raw="2026-06-13">13 Jun</span>
-                <span class="tarefa-msg">4 msg</span>
-              </div>
+              {% endfor %}
+              <button class="add-tarefa" onclick="abrirModalNovo({{ coluna.id }}, {{ swimlane.id }})">+ Adicionar tarefa</button>
             </div>
-
-            <div class="tarefa" style="border-left-color:#3b82f6;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-media">Media</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Carrinho de compras</h3>
-              <div class="labels">
-                <span class="label">Frontend</span>
-                <span class="label">UX</span>
-              </div>
-              <div class="tarefa-progresso"><span style="width:40%;background:#7c3aed;"></span></div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#7c3aed;">JS</span>
-                <span class="tarefa-data" data-raw="2026-06-16">16 Jun</span>
-                <span class="tarefa-msg">3 msg</span>
-              </div>
-            </div>
-
-            <button class="add-tarefa" onclick="abrirModalNovo()">+ Adicionar tarefa</button>
+            {% endfor %}
           </div>
-
-          <div class="coluna">
-            <div class="coluna-topo">
-              <span class="coluna-bola" style="background:#10b981;"></span>
-              <h2>Concluído</h2>
-              <span class="coluna-count">0</span>
-            </div>
-
-            <div class="tarefa" style="border-left-color:#10b981;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-feito">Feito</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Setup React Native + Expo</h3>
-              <div class="labels">
-                <span class="label">Mobile</span>
-              </div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#14b8a6;">TK</span>
-                <span class="tarefa-data" data-raw="2026-06-01">01 Jun</span>
-                <span class="tarefa-msg">2 msg</span>
-              </div>
-            </div>
-
-            <div class="tarefa" style="border-left-color:#10b981;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-feito">Feito</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Modelagem banco de dados</h3>
-              <div class="labels">
-                <span class="label">Backend</span>
-                <span class="label">DB</span>
-              </div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#7c3aed;">JS</span>
-                <span class="tarefa-data" data-raw="2026-05-28">28 Mai</span>
-                <span class="tarefa-msg">6 msg</span>
-              </div>
-            </div>
-
-            <div class="tarefa" style="border-left-color:#10b981;">
-              <div class="tarefa-topo">
-                <span class="prioridade prio-feito">Feito</span>
-                <span class="menu-pontos">...</span>
-              </div>
-              <h3>Wireframes aprovados</h3>
-              <div class="labels">
-                <span class="label">Design</span>
-              </div>
-              <div class="tarefa-rodape">
-                <span class="tarefa-avatar" style="background:#ec4899;">MA</span>
-                <span class="tarefa-data" data-raw="2026-05-25">25 Mai</span>
-                <span class="tarefa-msg">10 msg</span>
-              </div>
-            </div>
-
-            <button class="add-tarefa" onclick="abrirModalNovo()">+ Adicionar tarefa</button>
-          </div>
+          {% else %}
+          <p style="color:#9a8fbe;padding:20px;">Nenhuma swimlane criada ainda.</p>
+          {% endfor %}
 
         </div>
 
@@ -1246,21 +1234,22 @@
     </div>
   </div>
 
+  <style>
+    .metricas-bar { display:flex; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+    .metrica-card { background:#fff; border-radius:12px; padding:12px 18px; flex:1; min-width:120px; border:1.5px solid #ece7f9; }
+    .metrica-card .rotulo { font-size:11px; font-weight:600; color:#9a8fbe; text-transform:uppercase; }
+    .metrica-card .valor { font-size:22px; font-weight:700; color:#1a1233; margin-top:2px; }
+    .toast-erro { position:fixed; bottom:24px; right:24px; background:#be185d; color:#fff; padding:12px 20px; border-radius:10px; font-size:14px; font-weight:600; z-index:999; box-shadow:0 8px 24px rgba(0,0,0,0.2); }
+  </style>
   <script>
+    var QUADRO_ID = {{ quadro.id }};
+    var MEMBROS = {{ membros|tojson }};
+    var CURRENT_USER_ID = {{ session.get('usuario_id')|tojson }};
+    var COLUNAS = {{ colunas|tojson }};
+    var RAIA_LIST = [{% for s in swimlanes %}{"id":{{ s.id }},"nome":"{{ s.nome }}"}{% if not loop.last %},{% endif %}{% endfor %}];
+
     (function () {
-      var params = new URLSearchParams(window.location.search);
-      var projeto = params.get('projeto');
-      var empresa = params.get('empresa');
-      if (projeto) {
-        document.getElementById('proj-nome').textContent = projeto;
-        document.getElementById('bc-projeto').textContent = projeto;
-        document.getElementById('sub-projeto').innerHTML = projeto + ' &nbsp;&middot;&nbsp; Sprint 3';
-        document.title = 'Flowboard - ' + projeto;
-      }
-      if (empresa) {
-        document.getElementById('proj-empresa').textContent = empresa;
-        document.getElementById('bc-empresa').textContent = empresa;
-      }
+      document.title = 'Flowboard - {{ quadro.nome }}';
     })();
 
     function normalizar(txt) {
@@ -1268,11 +1257,12 @@
     }
 
     function dadosTarefa(card) {
-      var prioEl = card.querySelector('.prioridade');
+      var prio = card.getAttribute('data-prio') || 'Media';
       var avatarEl = card.querySelector('.tarefa-avatar');
       return {
-        prio: normalizar(prioEl ? prioEl.textContent : ''),
+        prio: prio,
         resp: avatarEl ? avatarEl.textContent.trim() : '',
+        respId: card.getAttribute('data-resp-id'),
         titulo: (card.querySelector('h3') || {}).textContent || ''
       };
     }
@@ -1307,14 +1297,14 @@
 
     function aplicarFiltros() {
       var hoje = new Date().toISOString().split('T')[0];
-      document.querySelectorAll('.coluna').forEach(function (coluna) {
+      document.querySelectorAll('.matrix-cell').forEach(function (celula) {
         var visiveis = 0;
-        coluna.querySelectorAll('.tarefa').forEach(function (card) {
+        celula.querySelectorAll('.tarefa').forEach(function (card) {
           var d = dadosTarefa(card);
           var ok = true;
           if (filtros.prio.length && filtros.prio.indexOf(d.prio) === -1) ok = false;
           if (filtros.resp.length && filtros.resp.indexOf(d.resp) === -1) ok = false;
-          if (filtroSidebarAtivo === 'minhas' && d.resp !== 'JS') ok = false;
+          if (filtroSidebarAtivo === 'minhas' && d.respId != CURRENT_USER_ID) ok = false;
           if (filtroSidebarAtivo === 'alta' && d.prio !== 'Alta') ok = false;
           if (filtroSidebarAtivo === 'vencendo') {
             var dataEl = card.querySelector('.tarefa-data');
@@ -1324,14 +1314,14 @@
           card.classList.toggle('oculta', !ok);
           if (ok) visiveis++;
         });
-        var msg = coluna.querySelector('.coluna-vazia');
+        var msg = celula.querySelector('.coluna-vazia');
         if (visiveis === 0) {
           if (!msg) {
             msg = document.createElement('div');
             msg.className = 'coluna-vazia';
             msg.textContent = 'Nenhuma tarefa';
-            var add = coluna.querySelector('.add-tarefa');
-            coluna.insertBefore(msg, add || null);
+            var add = celula.querySelector('.add-tarefa');
+            celula.insertBefore(msg, add || null);
           }
         } else if (msg) {
           msg.remove();
@@ -1360,15 +1350,15 @@
       agrupado = !agrupado;
       document.getElementById('btn-agrupar').classList.toggle('ativo', agrupado);
       var ordem = { 'Alta': 0, 'Media': 1, 'Baixa': 2, 'Feito': 3 };
-      document.querySelectorAll('.coluna').forEach(function (coluna) {
-        var cards = Array.prototype.slice.call(coluna.querySelectorAll('.tarefa'));
+      document.querySelectorAll('.matrix-cell').forEach(function (celula) {
+        var cards = Array.prototype.slice.call(celula.querySelectorAll('.tarefa'));
         if (agrupado) {
           cards.sort(function (a, b) {
             return (ordem[dadosTarefa(a).prio] ?? 9) - (ordem[dadosTarefa(b).prio] ?? 9);
           });
         }
-        var add = coluna.querySelector('.add-tarefa');
-        cards.forEach(function (c) { coluna.insertBefore(c, add || null); });
+        var add = celula.querySelector('.add-tarefa');
+        cards.forEach(function (c) { celula.insertBefore(c, add || null); });
       });
     }
 
@@ -1387,7 +1377,7 @@
           '<div class="modal-topo">' +
             '<div class="modal-icone"><span></span></div>' +
             '<div class="modal-titulo">' +
-              '<input type="text" id="modal-input" value="Implementar auth com JWT" />' +
+              '<input type="text" id="modal-input" placeholder="Nome da tarefa" />' +
               '<span class="modal-codigo" id="modal-codigo">ECOM-047</span>' +
             '</div>' +
             '<button class="fechar" onclick="fecharModal()" aria-label="Fechar">&times;</button>' +
@@ -1395,12 +1385,7 @@
           '<div class="modal-corpo">' +
             '<div class="campo">' +
               '<label class="campo-label">Responsável</label>' +
-              '<div class="resp-lista" id="resp-lista">' +
-                '<span class="resp ativo" style="background:#f59e0b;" data-resp="LR" onclick="selecionarResp(this)">LR</span>' +
-                '<span class="resp" style="background:#7c3aed;" data-resp="JS" onclick="selecionarResp(this)">JS</span>' +
-                '<span class="resp" style="background:#ec4899;" data-resp="MA" onclick="selecionarResp(this)">MA</span>' +
-                '<span class="resp" style="background:#14b8a6;" data-resp="TK" onclick="selecionarResp(this)">TK</span>' +
-              '</div>' +
+              '<div class="resp-lista" id="resp-lista"></div>' +
             '</div>' +
             '<div class="campo">' +
               '<label class="campo-label">Prioridade</label>' +
@@ -1411,18 +1396,18 @@
               '</div>' +
             '</div>' +
             '<div class="campo">' +
-              '<div class="linha-2">' +
+              '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">' +
                 '<div>' +
-                  '<label class="campo-label">Status</label>' +
-                  '<select id="modal-status">' +
-                    '<option>A Fazer</option>' +
-                    '<option>Em Andamento</option>' +
-                    '<option>Concluído</option>' +
-                  '</select>' +
+                  '<label class="campo-label">Coluna</label>' +
+                  '<select id="modal-coluna"></select>' +
+                '</div>' +
+                '<div>' +
+                  '<label class="campo-label">Raia</label>' +
+                  '<select id="modal-raia"></select>' +
                 '</div>' +
                 '<div>' +
                   '<label class="campo-label">Prazo</label>' +
-                  '<input type="date" id="modal-prazo" value="2026-06-12" />' +
+                  '<input type="date" id="modal-prazo" />' +
                 '</div>' +
               '</div>' +
             '</div>' +
@@ -1443,6 +1428,16 @@
               '<label class="campo-label">Tags</label>' +
               '<div class="tags-lista" id="tags-lista">' +
                 '<button class="tag-add" onclick="adicionarTag()" aria-label="Adicionar tag">+</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="campo metricas-modal">' +
+              '<label class="campo-label">Métricas</label>' +
+              '<div style="display:flex;gap:12px;flex-wrap:wrap;">' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Criado em:</strong> <span id="m-criado">-</span></span>' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Iniciado em:</strong> <span id="m-iniciado">-</span></span>' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Concluído em:</strong> <span id="m-concluido">-</span></span>' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Lead Time:</strong> <span id="m-lt">-</span></span>' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Cycle Time:</strong> <span id="m-ct">-</span></span>' +
               '</div>' +
             '</div>' +
             '<div class="campo">' +
@@ -1474,12 +1469,18 @@
       var d = dadosTarefa(card);
       document.getElementById('modal-input').value = d.titulo;
       
-      document.querySelectorAll('.prio-opc').forEach(function (p) {
-        p.classList.toggle('ativo', p.getAttribute('data-prio') === d.prio);
-      });
-      
+      var colunaId = card.getAttribute('data-coluna-id');
+      var colunaSelect = document.getElementById('modal-coluna');
+      if (colunaSelect && colunaId) colunaSelect.value = colunaId;
+      var raiaId = card.getAttribute('data-raia-id');
+      var raiaSelect = document.getElementById('modal-raia');
+      if (raiaSelect && raiaId) raiaSelect.value = raiaId;
+
+      var prioBtn = document.querySelector('.prio-opc[data-prio="' + d.prio + '"]');
+      if (prioBtn) selecionarPrio(prioBtn);
+
       document.querySelectorAll('.resp').forEach(function (r) {
-        r.classList.toggle('ativo', r.getAttribute('data-resp') === d.resp);
+        r.classList.toggle('ativo', r.getAttribute('data-resp-id') === d.respId);
       });
 
       var corBordaAtual = card.style.borderLeftColor;
@@ -1495,17 +1496,13 @@
         inputPrazo.value = raw ? raw : new Date().toISOString().split('T')[0];
       }
 
-      var colunaPai = card.closest('.coluna');
-      var tituloCol = colunaPai ? colunaPai.querySelector('h2').textContent.trim() : '';
-      var selectStatus = document.getElementById('modal-status');
-      if (selectStatus) {
-        for (var i = 0; i < selectStatus.options.length; i++) {
-          if (tituloCol.toLowerCase().includes(selectStatus.options[i].text.toLowerCase())) {
-            selectStatus.selectedIndex = i;
-            break;
-          }
-        }
-      }
+      document.getElementById('modal-desc').value = card.dataset.desc || '';
+
+      document.getElementById('m-criado').textContent = card.dataset.criado || '-';
+      document.getElementById('m-iniciado').textContent = card.dataset.iniciado || '-';
+      document.getElementById('m-concluido').textContent = card.dataset.concluido || '-';
+      document.getElementById('m-lt').textContent = card.dataset.lt || '-';
+      document.getElementById('m-ct').textContent = card.dataset.ct || '-';
 
       var tagsLista = document.getElementById('tags-lista');
       tagsLista.querySelectorAll('.tag-chip').forEach(function (t) { t.remove(); });
@@ -1520,15 +1517,27 @@
       abrirOverlay();
     }
 
-    function abrirModalNovo() {
+    function abrirModalNovo(colunaId, raiaId) {
       cardAtual = null;
       document.getElementById('modal-input').value = '';
       document.getElementById('modal-desc').value = '';
       document.getElementById('modal-codigo').textContent = 'ECOM-' + Math.floor(Math.random() * 900 + 100);
       document.getElementById('modal-prazo').value = new Date().toISOString().split('T')[0];
       
-      var selectStatus = document.getElementById('modal-status');
-      if (selectStatus) selectStatus.selectedIndex = 0;
+      var colunaSelect = document.getElementById('modal-coluna');
+      if (colunaSelect) {
+        if (colunaId) colunaSelect.value = colunaId;
+        else if (colunaSelect.options.length > 0) colunaSelect.selectedIndex = 0;
+      }
+      var raiaSelect = document.getElementById('modal-raia');
+      if (raiaSelect) {
+        if (raiaId) raiaSelect.value = raiaId;
+        else if (raiaSelect.options.length > 0) raiaSelect.selectedIndex = 0;
+      }
+      
+      document.querySelectorAll('.prio-opc').forEach(function(p){p.classList.remove('ativo');});
+      var med = document.querySelector('.prio-opc[data-prio="Media"]');
+      if (med) med.classList.add('ativo');
       
       abrirOverlay();
     }
@@ -1576,38 +1585,89 @@
       list.insertBefore(chip, addBtn);
     }
 
-    function salvarCard() {
+    async function salvarCard() {
       var titulo = document.getElementById('modal-input').value.trim();
       var prioEl = document.querySelector('.prio-opc.ativo');
       var prio = prioEl ? prioEl.getAttribute('data-prio') : 'Media';
 
       var respEl = document.querySelector('.resp.ativo');
-      var respNome = respEl ? respEl.getAttribute('data-resp') : 'JS';
+      var respNome = respEl ? respEl.getAttribute('data-resp') : '?';
       var respCor = respEl ? respEl.style.backgroundColor : '#7c3aed';
+      var respId = respEl ? respEl.getAttribute('data-resp-id') : null;
 
       var corEl = document.querySelector('.cor-opc.ativo');
       var corCard = corEl ? corEl.getAttribute('data-cor') : '#a78bfa';
 
-      var statusSelect = document.getElementById('modal-status');
-      var statusAtual = statusSelect ? statusSelect.value : 'A Fazer';
+      var colunaSelect = document.getElementById('modal-coluna');
+      var colunaId = colunaSelect ? parseInt(colunaSelect.value, 10) : null;
+      var raiaSelect = document.getElementById('modal-raia');
+      var raiaId = raiaSelect ? parseInt(raiaSelect.value, 10) : null;
       
       var prazoValue = document.getElementById('modal-prazo').value;
+      var descValue = document.getElementById('modal-desc').value;
 
+      var tags = [];
+      document.querySelectorAll('#tags-lista .tag-chip').forEach(function (chip) {
+        tags.push(chip.childNodes[0].textContent.trim());
+      });
+
+      // Persistir no backend
+      var url = cardAtual ? '/cartao/' + cardAtual.dataset.id + '/editar' : '/cartao/criar';
+      var resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          titulo: titulo,
+          prioridade: prio,
+          prazo: prazoValue,
+          cor: corCard,
+          descricao: descValue,
+          tags: tags,
+          coluna_id: colunaId,
+          raia_id: raiaId,
+          responsavel: respNome,
+          responsavel_cor: respCor,
+          responsavel_id: respId
+        })
+      });
+      var json = await resp.json();
+
+      if (!json.ok) {
+        mostrarErro(json.erro || 'Erro ao salvar cartão');
+        return;
+      }
+
+      if (!cardAtual && json.ok) {
+        fecharModal();
+        location.reload();
+        return;
+      }
+
+      // Atualizar DOM (apenas edição)
       if (cardAtual) {
         var h3 = cardAtual.querySelector('h3');
         if (h3 && titulo) h3.textContent = titulo;
         
+        var nomeColuna = '';
+        COLUNAS.forEach(function(c){ if (c.id === colunaId) nomeColuna = c.nome; });
+        var isFeito = nomeColuna.toLowerCase().indexOf('feito') !== -1;
         var pEl = cardAtual.querySelector('.prioridade');
         if (pEl) {
-          pEl.textContent = statusAtual === 'Concluído' ? 'Feito' : prio;
-          pEl.className = 'prioridade ' + (statusAtual === 'Concluído' ? 'prio-feito' : { Alta: 'prio-alta', Media: 'prio-media', Baixa: 'prio-baixa' }[prio]);
+          pEl.textContent = isFeito ? 'Feito' : prio;
+          pEl.className = 'prioridade ' + (isFeito ? 'prio-feito' : { Alta: 'prio-alta', Media: 'prio-media', Baixa: 'prio-baixa' }[prio]);
         }
         
+        cardAtual.setAttribute('data-prio', prio);
+        cardAtual.setAttribute('data-desc', descValue);
+        cardAtual.setAttribute('data-coluna-id', colunaId);
+        cardAtual.setAttribute('data-raia-id', raiaId);
+
         var avatarEl = cardAtual.querySelector('.tarefa-avatar');
         if (avatarEl) {
           avatarEl.textContent = respNome;
           avatarEl.style.backgroundColor = respCor;
         }
+        if (respId) cardAtual.setAttribute('data-resp-id', respId);
 
         var dataEl = cardAtual.querySelector('.tarefa-data');
         if (dataEl) {
@@ -1620,8 +1680,7 @@
         var labelsWrap = cardAtual.querySelector('.labels');
         if (labelsWrap) {
           labelsWrap.innerHTML = '';
-          document.querySelectorAll('#tags-lista .tag-chip').forEach(function (chip) {
-            var nome = chip.childNodes[0].textContent.trim();
+          tags.forEach(function (nome) {
             var span = document.createElement('span');
             span.className = 'label';
             span.textContent = nome;
@@ -1629,48 +1688,46 @@
           });
         }
 
-        moverCardParaColuna(cardAtual, statusAtual);
+        moverCardParaCelula(cardAtual, colunaId, raiaId);
 
       } else if (titulo) {
-        criarCard(titulo, prio, respNome, respCor, corCard, statusAtual, prazoValue);
+        criarCard(titulo, prio, respNome, respCor, corCard, colunaId, raiaId, prazoValue, respId);
       }
       
       fecharModal();
       aplicarFiltros();
+      carregarMetricas();
     }
 
-    function moverCardParaColuna(card, status) {
-      var colunas = document.querySelectorAll('.coluna');
-      var colunaDestino = null;
-
-      colunas.forEach(function (col) {
-        var tituloCol = col.querySelector('h2');
-        var nomeCol = tituloCol ? tituloCol.textContent.trim() : '';
-        if (nomeCol.toLowerCase().includes(status.toLowerCase())) {
-          colunaDestino = col;
-        }
-      });
-
-      if (colunaDestino) {
-        var add = colunaDestino.querySelector('.add-tarefa');
-        colunaDestino.insertBefore(card, add || null);
+    function moverCardParaCelula(card, colunaId, raiaId) {
+      var celula = document.querySelector('.matrix-cell[data-coluna-id="' + colunaId + '"][data-raia-id="' + raiaId + '"]');
+      if (celula) {
+        var add = celula.querySelector('.add-tarefa');
+        celula.insertBefore(card, add || null);
       }
     }
 
-    function criarCard(titulo, prio, respNome, respCor, corCard, status, prazo) {
+    function criarCard(titulo, prio, respNome, respCor, corCard, colunaId, raiaId, prazo, respId) {
       var classe = { Alta: 'prio-alta', Media: 'prio-media', Baixa: 'prio-baixa' }[prio];
-      var exibicaoPrio = status === 'Concluído' ? 'Feito' : prio;
-      var classePrio = status === 'Concluído' ? 'prio-feito' : classe;
+      var nomeColuna = '';
+      COLUNAS.forEach(function(c){ if (c.id === colunaId) nomeColuna = c.nome; });
+      var isFeito = nomeColuna.toLowerCase().indexOf('feito') !== -1;
+      var exibicaoPrio = isFeito ? 'Feito' : prio;
+      var classePrio = isFeito ? 'prio-feito' : classe;
       var textoData = formatarDataExibicao(prazo);
       
       var card = document.createElement('div');
       card.className = 'tarefa';
       card.style.borderLeftColor = corCard;
+      if (respId) card.setAttribute('data-resp-id', respId);
+      card.setAttribute('data-prio', prio);
+      card.setAttribute('data-coluna-id', colunaId);
+      card.setAttribute('data-raia-id', raiaId);
       card.innerHTML =
         '<div class="tarefa-topo"><span class="prioridade ' + classePrio + '">' + exibicaoPrio + '</span><span class="menu-pontos">...</span></div>' +
         '<h3>' + titulo + '</h3>' +
         '<div class="labels"></div>' +
-        '<div class="tarefa-rodape"><span class="tarefa-avatar" style="background:' + respCor + ';">' + respNome + '</span><span class="tarefa-data" data-raw="' + prazo + '">' + textoData + '</span><span class="tarefa-msg">0 msg</span></div>';
+        '<div class="tarefa-rodape"><span class="tarefa-avatar" style="background:' + respCor + ';">' + respNome + '</span><span class="tarefa-data" data-raw="' + prazo + '">' + textoData + '</span><span class="tarefa-msg"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> 0</span></div>';
       
       card.addEventListener('click', function () { abrirModalCard(card); });
       
@@ -1684,15 +1741,19 @@
         labelsWrap.appendChild(span);
       });
 
-      moverCardParaColuna(card, status);
+      moverCardParaCelula(card, colunaId, raiaId);
     }
 
-    function excluirCard() {
+    async function excluirCard() {
       if (cardAtual && confirm('Excluir este card?')) {
+        if (cardAtual.dataset.id) {
+          await fetch('/cartao/' + cardAtual.dataset.id + '/excluir', { method: 'POST' });
+        }
         cardAtual.remove();
         fecharModal();
-        aplicarFiltros();
-      }
+      atualizarContagem();
+      aplicarFiltros();
+    }
     }
 
     function atualizarContagem() {
@@ -1703,21 +1764,22 @@
       var vencendoHoje = 0;
       var hojeStr = new Date().toISOString().split('T')[0];
 
-      document.querySelectorAll('.coluna').forEach(function (coluna) {
-        var n = coluna.querySelectorAll('.tarefa:not(.oculta)').length;
-        var c = coluna.querySelector('.coluna-count');
-        if (c) c.textContent = n;
-
-        var tituloCol = coluna.querySelector('h2') ? coluna.querySelector('h2').textContent.trim() : '';
-        if (tituloCol.toLowerCase().includes('concluído')) {
-          tarefasConcluidas += coluna.querySelectorAll('.tarefa').length;
+      COLUNAS.forEach(function(c){
+        var count = 0;
+        document.querySelectorAll('.matrix-cell[data-coluna-id="' + c.id + '"]').forEach(function (celula) {
+          count += celula.querySelectorAll('.tarefa:not(.oculta)').length;
+        });
+        var badge = document.getElementById('col-count-' + c.id);
+        if (badge) badge.textContent = count;
+        if (c.nome.toLowerCase().indexOf('feito') !== -1) {
+          tarefasConcluidas += count;
         }
       });
 
       document.querySelectorAll('.tarefa').forEach(function (card) {
         var d = dadosTarefa(card);
         
-        if (d.resp === 'JS') minhasTarefas++;
+        if (d.respId == CURRENT_USER_ID) minhasTarefas++;
         if (d.prio === 'Alta') altaPrioridade++;
         
         var dataEl = card.querySelector('.tarefa-data');
@@ -1736,15 +1798,68 @@
       document.getElementById('barra-progresso').style.width = pct + '%';
     }
 
+    function carregarMetricas() {
+      fetch('/api/metricas/' + QUADRO_ID).then(function(r){ return r.json(); }).then(function(d){
+        document.getElementById('m-wip').textContent = d.wip;
+        document.getElementById('m-throughput').textContent = d.throughput + '/dia';
+        document.getElementById('m-concluidos').textContent = d.concluidos + '/' + d.total;
+      });
+    }
+
+    function mostrarErro(msg) {
+      var e = document.createElement('div');
+      e.className = 'toast-erro';
+      e.textContent = msg;
+      document.body.appendChild(e);
+      setTimeout(function(){ e.remove(); }, 4000);
+    }
+
     function initModal() {
       document.body.insertAdjacentHTML('beforeend', MODAL_HTML);
+      carregarMetricas();
+
+      // Preencher lista de responsáveis a partir dos membros do DB
+      var respLista = document.getElementById('resp-lista');
+      if (respLista) {
+        respLista.innerHTML = '';
+        MEMBROS.forEach(function (m) {
+          var span = document.createElement('span');
+          span.className = 'resp';
+          span.style.background = m.cor || '#7c3aed';
+          span.setAttribute('data-resp-id', m.id);
+          span.setAttribute('data-resp', m.iniciais);
+          span.textContent = m.iniciais;
+          span.onclick = function () { selecionarResp(this); };
+          respLista.appendChild(span);
+        });
+        var primeiro = respLista.querySelector('.resp');
+        if (primeiro) primeiro.classList.add('ativo');
+      }
+
+      // Preencher dropdown de coluna (fixo: A FAZER, FAZENDO, FEITO)
+      var colunaSelect = document.getElementById('modal-coluna');
+      if (colunaSelect) {
+        COLUNAS.forEach(function (c) {
+          var opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = c.nome;
+          colunaSelect.appendChild(opt);
+        });
+      }
+
+      // Preencher dropdown de raia (swimlanes)
+      var raiaSelect = document.getElementById('modal-raia');
+      if (raiaSelect) {
+        RAIA_LIST.forEach(function (r) {
+          var opt = document.createElement('option');
+          opt.value = r.id;
+          opt.textContent = r.nome;
+          raiaSelect.appendChild(opt);
+        });
+      }
 
       document.querySelectorAll('.tarefa').forEach(function (card) {
         card.addEventListener('click', function () { abrirModalCard(card); });
-      });
-      document.querySelectorAll('.add-tarefa').forEach(function (btn) {
-        btn.removeAttribute('onclick');
-        btn.addEventListener('click', abrirModalNovo);
       });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') fecharModal();
@@ -1770,6 +1885,107 @@
     window.adicionarTag = adicionarTag;
     window.salvarCard = salvarCard;
     window.excluirCard = excluirCard;
+    window.editarRaia = editarRaia;
+    window.excluirRaia = excluirRaia;
+    window.criarRaia = criarRaia;
+
+    function editarWip(colunaId, atual) {
+      var qtd = prompt('Novo limite WIP para esta coluna:', atual);
+      if (qtd === null) return;
+      qtd = parseInt(qtd, 10);
+      if (isNaN(qtd) || qtd < 1) return;
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/coluna/' + colunaId + '/wip';
+      var i = document.createElement('input');
+      i.name = 'qtd_max';
+      i.value = qtd;
+      form.appendChild(i);
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function editarRaia(raiaId, nomeAtual) {
+      var nome = prompt('Nome da swimlane:', nomeAtual);
+      if (!nome || !nome.trim()) return;
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/raia/' + raiaId + '/editar';
+      var iNome = document.createElement('input');
+      iNome.name = 'nome';
+      iNome.value = nome.trim();
+      form.appendChild(iNome);
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function excluirRaia(raiaId) {
+      if (!confirm('Excluir esta swimlane? Os cartões serão movidos para outra swimlane.')) return;
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/raia/' + raiaId + '/excluir';
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function criarRaia() {
+      var nome = prompt('Nome da nova swimlane:');
+      if (nome && nome.trim()) {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/quadro/' + QUADRO_ID + '/raia/nova';
+        var input = document.createElement('input');
+        input.name = 'nome';
+        input.value = nome.trim();
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+      }
+    }
+    // ── Editar quadro ──
+    window.abrirModalEditarQuadro = function () {
+      document.getElementById('overlay-editar-quadro').classList.add('aberto');
+    };
+
+    window.fecharModalEditarQuadro = function () {
+      document.getElementById('overlay-editar-quadro').classList.remove('aberto');
+    };
+
+    window.fecharModalEditarFora = function (e) {
+      if (e.target.id === 'overlay-editar-quadro') fecharModalEditarQuadro();
+    };
   </script>
+
+  <!-- Modal editar quadro -->
+  <div class="overlay" id="overlay-editar-quadro" onclick="fecharModalEditarFora(event)">
+    <div class="modal editar-quadro-modal" role="dialog" aria-modal="true" style="max-width:420px;">
+      <form method="POST" action="{{ url_for('editar_quadro', quadro_id=quadro.id) }}">
+        <div class="modal-topo">
+          <div class="modal-icone"><span></span></div>
+          <div class="modal-titulo" style="font-size:18px;font-weight:700;color:#1a1233;">Editar projeto</div>
+          <button type="button" class="fechar" onclick="fecharModalEditarQuadro()" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="modal-corpo">
+          <div class="campo">
+            <span class="campo-label">Nome do projeto</span>
+            <input type="text" name="nome" value="{{ quadro.nome }}" />
+          </div>
+          <div class="campo">
+            <span class="campo-label">Empresa / Workspace</span>
+            <select name="empresa">
+              <option value="NovaTech" {% if quadro.empresa == 'NovaTech' %}selected{% endif %}>NovaTech</option>
+              <option value="DesignLab" {% if quadro.empresa == 'DesignLab' %}selected{% endif %}>DesignLab</option>
+              <option value="Pessoal" {% if quadro.empresa == 'Pessoal' %}selected{% endif %}>Pessoal</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-rodape" style="padding:16px 24px 24px;display:flex;gap:10px;justify-content:flex-end;">
+          <button type="button" class="btn-secundario" onclick="fecharModalEditarQuadro()">Cancelar</button>
+          <button type="submit" class="btn-novo" style="padding:10px 24px;">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>

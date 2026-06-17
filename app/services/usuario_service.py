@@ -58,13 +58,13 @@ class UsuarioService:
         Returns: Usuario object if found, None otherwise
         """
         try:
-            query = "SELECT ID_USUARIO, NOME, EMAIL, FOTO FROM USUARIO WHERE EMAIL = %s"
+            query = "SELECT ID_USUARIO, NOME, EMAIL, SENHA, FOTO FROM USUARIO WHERE EMAIL = %s"
             self.db.cursor.execute(query, (email,))
             
             result = self.db.cursor.fetchone()
             if result:
-                usuario_id, nome, email_db, foto = result
-                return Usuario(nome, email_db, foto, id=usuario_id)
+                usuario_id, nome, email_db, senha, foto = result
+                return Usuario(nome, email_db, senha, foto, id=usuario_id)
             return None
             
         except Error as e:
@@ -77,13 +77,13 @@ class UsuarioService:
         Returns: List of Usuario objects
         """
         try:
-            query = "SELECT ID_USUARIO, NOME, EMAIL, FOTO FROM USUARIO ORDER BY ID_USUARIO"
+            query = "SELECT ID_USUARIO, NOME, EMAIL, SENHA, FOTO FROM USUARIO ORDER BY ID_USUARIO"
             self.db.cursor.execute(query)
             
             usuarios = []
             for row in self.db.cursor.fetchall():
-                usuario_id, nome, email, foto = row
-                usuarios.append(Usuario(nome, email, foto, id=usuario_id))
+                usuario_id, nome, email, senha, foto = row
+                usuarios.append(Usuario(nome, email, senha, foto, id=usuario_id))
             
             return usuarios
             
@@ -125,7 +125,7 @@ class UsuarioService:
                 UPDATE USUARIO 
                 SET {', '.join(updates)}
                 WHERE ID_USUARIO = %s
-                RETURNING ID_USUARIO, NOME, EMAIL, FOTO
+                RETURNING ID_USUARIO, NOME, EMAIL, SENHA, FOTO
             """
             
             self.db.cursor.execute(query, params)
@@ -133,8 +133,8 @@ class UsuarioService:
             
             result = self.db.cursor.fetchone()
             if result:
-                usuario_id, nome_db, email_db, foto_db = result
-                return Usuario(nome_db, email_db, foto_db, id=usuario_id)
+                usuario_id, nome_db, email_db, senha_db, foto_db = result
+                return Usuario(nome_db, email_db, senha_db, foto_db, id=usuario_id)
             return None
             
         except Error as e:

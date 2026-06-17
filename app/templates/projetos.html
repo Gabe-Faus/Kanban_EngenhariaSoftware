@@ -298,6 +298,21 @@
       cursor: pointer;
     }
 
+    .btn-logout {
+      font-size: 13px;
+      font-weight: 600;
+      color: #9a8fbe;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-logout:hover {
+      background: #f5f3fd;
+      color: #be185d;
+    }
+
     .main {
       padding: 28px 36px 40px;
     }
@@ -611,7 +626,8 @@
         </div>
         <div class="topo-acoes">
           <div class="sino">!<span class="ponto"></span></div>
-          <div class="avatar">JS</div>
+          <a href="{{ url_for('logout') }}" class="btn-logout" title="Sair">Sair</a>
+          <div class="avatar">{{ session.get('usuario_nome', '?')[:2].upper() }}</div>
         </div>
       </header>
 
@@ -619,116 +635,34 @@
 
         <div class="cabecalho">
           <h1>Templates mais populares</h1>
-          <button class="btn-novo" onclick="location.href='kanban.html?projeto=Novo%20Board&empresa=NovaTech'">+ Novo Board</button>
+          <button class="btn-novo" onclick="abrirModalNovoBoard()">+ Novo Board</button>
         </div>
         <p class="subtitulo-secao">Vistos recentemente</p>
 
 
         <div class="grid-templates">
 
-          <a class="card-template" href="kanban.html?projeto=App%20E-commerce&empresa=NovaTech">
-            <div class="preview" style="background:#8b5cf6;">
-              <span class="col"></span><span class="col"></span><span class="col"></span>
-              <span class="tag">Dev</span>
-            </div>
-            <div class="card-body">
-              <h3>App E-commerce</h3>
-              <p class="card-empresa" style="color:#8b5cf6;">NovaTech</p>
-              <div class="progresso"><span style="width:72%;background:#8b5cf6;"></span></div>
-              <p class="tarefas">18/25 tarefas</p>
-            </div>
-          </a>
-
-          <a class="card-template" href="kanban.html?projeto=Redesign%20Portal%20RH&empresa=DesignLab">
-            <div class="preview" style="background:#ec4899;">
-              <span class="col"></span><span class="col"></span><span class="col"></span>
-              <span class="tag">Design</span>
-            </div>
-            <div class="card-body">
-              <h3>Redesign Portal RH</h3>
-              <p class="card-empresa" style="color:#ec4899;">DesignLab</p>
-              <div class="progresso"><span style="width:45%;background:#ec4899;"></span></div>
-              <p class="tarefas">9/20 tarefas</p>
-            </div>
-          </a>
-
-          <a class="card-template" href="kanban.html?projeto=API%20de%20Pagamentos&empresa=NovaTech">
-            <div class="preview" style="background:#10b981;">
-              <span class="col"></span><span class="col"></span><span class="col"></span>
-              <span class="tag">Dev</span>
-            </div>
-            <div class="card-body">
-              <h3>API de Pagamentos</h3>
-              <p class="card-empresa" style="color:#10b981;">NovaTech</p>
-              <div class="progresso"><span style="width:88%;background:#10b981;"></span></div>
-              <p class="tarefas">22/25 tarefas</p>
-            </div>
-          </a>
-
-          <a class="card-template" href="kanban.html?projeto=Dashboard%20Analytics&empresa=NovaTech">
-            <div class="preview" style="background:#f59e0b;">
-              <span class="col"></span><span class="col"></span><span class="col"></span>
-              <span class="tag">Data</span>
-            </div>
-            <div class="card-body">
-              <h3>Dashboard Analytics</h3>
-              <p class="card-empresa" style="color:#f59e0b;">NovaTech</p>
-              <div class="progresso"><span style="width:30%;background:#f59e0b;"></span></div>
-              <p class="tarefas">6/20 tarefas</p>
-            </div>
-          </a>
-
-          <a class="card-template" href="kanban.html?projeto=Plataforma%20de%20Cursos&empresa=DesignLab">
-            <div class="preview" style="background:#3b82f6;">
-              <span class="col"></span><span class="col"></span><span class="col"></span>
-              <span class="tag">Edu</span>
-            </div>
-            <div class="card-body">
-              <h3>Plataforma de Cursos</h3>
-              <p class="card-empresa" style="color:#3b82f6;">DesignLab</p>
-              <div class="progresso"><span style="width:18%;background:#3b82f6;"></span></div>
-              <p class="tarefas">3/17 tarefas</p>
-            </div>
-          </a>
-
-          <a class="card-template" href="kanban.html?projeto=Sistema%20de%20Notifica%C3%A7%C3%B5es&empresa=NovaTech">
-            <div class="preview" style="background:#14b8a6;">
-              <span class="col"></span><span class="col"></span><span class="col"></span>
-              <span class="tag">Dev</span>
-            </div>
-            <div class="card-body">
-              <h3>Sistema de Notif.</h3>
-              <p class="card-empresa" style="color:#14b8a6;">NovaTech</p>
-              <div class="progresso"><span style="width:100%;background:#14b8a6;"></span></div>
-              <p class="tarefas">15/15 tarefas</p>
-            </div>
-          </a>
-
-          <a class="card-template" href="kanban.html?projeto=App%20de%20Finan%C3%A7as&empresa=Pessoal">
-            <div class="preview" style="background:#eab308;">
-              <span class="col"></span><span class="col"></span><span class="col"></span>
-              <span class="tag">Finance</span>
-            </div>
-            <div class="card-body">
-              <h3>App de Finanças</h3>
-              <p class="card-empresa" style="color:#ca8a04;">Pessoal</p>
-              <div class="progresso"><span style="width:42%;background:#eab308;"></span></div>
-              <p class="tarefas">5/12 tarefas</p>
-            </div>
-          </a>
-
-          <a class="card-template" href="kanban.html?projeto=Portfolio%20Pessoal&empresa=Pessoal">
-            <div class="preview" style="background:#ef4444;">
-              <span class="col"></span><span class="col"></span><span class="col"></span>
-              <span class="tag">Design</span>
-            </div>
-            <div class="card-body">
-              <h3>Portfolio Pessoal</h3>
-              <p class="card-empresa" style="color:#ef4444;">Pessoal</p>
-              <div class="progresso"><span style="width:80%;background:#ef4444;"></span></div>
-              <p class="tarefas">8/10 tarefas</p>
-            </div>
-          </a>
+          {% for quadro in quadros %}
+          <div class="card-template-wrapper" style="position:relative;">
+            <a class="card-template" href="{{ url_for('kanban', quadro_id=quadro.id) }}" data-empresa="{{ quadro.empresa }}">
+              <div class="preview" style="background:{{ quadro.cor or '#8b5cf6' }};">
+                <span class="col"></span><span class="col"></span><span class="col"></span>
+                <span class="tag">{{ quadro.tag or 'Dev' }}</span>
+              </div>
+              <div class="card-body">
+                <h3>{{ quadro.nome }}</h3>
+                <p class="card-empresa" style="color:{{ quadro.cor or '#8b5cf6' }};">{{ quadro.empresa }}</p>
+                <div class="progresso"><span style="width:{{ quadro.progresso or 0 }}%;background:{{ quadro.cor or '#8b5cf6' }};"></span></div>
+                <p class="tarefas">{{ quadro.concluidas or 0 }}/{{ quadro.total or 0 }} tarefas</p>
+              </div>
+            </a>
+            <form method="POST" action="{{ url_for('excluir_quadro', quadro_id=quadro.id) }}" onsubmit="return confirm('Excluir este board permanentemente?');" style="position:absolute;top:8px;right:8px;z-index:2;">
+              <button type="submit" style="background:#fee2e2;border:none;border-radius:6px;color:#be185d;cursor:pointer;font-size:14px;padding:2px 8px;line-height:1.4;" title="Excluir board">&times;</button>
+            </form>
+          </div>
+          {% else %}
+          <p class="sem-resultado">Nenhum board encontrado. Crie um novo!</p>
+          {% endfor %}
 
         </div>
 
@@ -739,68 +673,33 @@
 
         <div class="grid-workspaces">
 
-          <div class="card-ws" style="border-top-color:#7c3aed;">
+          {% for ws in workspaces %}
+          <div class="card-ws" style="border-top-color:{{ ws.cor or '#7c3aed' }};">
             <div class="ws-topo">
-              <div class="ws-icone" style="background:#7c3aed;">NT</div>
+              <div class="ws-icone" style="background:{{ ws.cor or '#7c3aed' }};">{{ ws.sigla or ws.nome[:2].upper() }}</div>
               <div class="ws-info">
-                <p class="nome">NovaTech Sistemas</p>
-                <p class="desc">Time principal de desenvolvimento</p>
+                <p class="nome">{{ ws.nome }}</p>
+                <p class="desc">{{ ws.descricao or '' }}</p>
               </div>
-              <span class="ws-plano">Pro</span>
+              <span class="ws-plano">{{ ws.plano or 'Free' }}</span>
             </div>
             <div class="ws-stats">
-              <div><b>8</b> boards</div>
-              <div><b>6</b> membros</div>
+              <div><b>{{ ws.num_boards or 0 }}</b> boards</div>
+              <div><b>{{ ws.num_membros or 0 }}</b> membros</div>
             </div>
             <div class="ws-membros">
-              <span style="background:#7c3aed;"></span>
-              <span style="background:#ec4899;"></span>
-              <span style="background:#10b981;"></span>
-              <span style="background:#f59e0b;"></span>
-              <span style="background:#e7e0f7;"></span>
+              {% for m in ws.membros %}<span style="background:{{ m.cor or '#7c3aed' }};"></span>{% endfor %}
             </div>
-            <button class="btn-ws" onclick="location.href='kanban.html?projeto=NovaTech%20Sistemas&empresa=NovaTech'">Abrir workspace</button>
+            {% if ws.quadro_principal_id %}
+            <button class="btn-ws" style="background:{{ ws.cor_btn or '' }};color:{{ ws.cor_btn_texto or '' }};"
+              onclick="location.href='{{ url_for('kanban', quadro_id=ws.quadro_principal_id) }}'">Abrir workspace</button>
+            {% else %}
+            <button class="btn-ws" style="background:#e7e0f7;color:#9a8fbe;cursor:default;" disabled>Sem boards</button>
+            {% endif %}
           </div>
-
-          <div class="card-ws" style="border-top-color:#ec4899;">
-            <div class="ws-topo">
-              <div class="ws-icone" style="background:#ec4899;">DL</div>
-              <div class="ws-info">
-                <p class="nome">DesignLab Studio</p>
-                <p class="desc">Projetos de design e UX</p>
-              </div>
-              <span class="ws-plano" style="color:#ec4899;background:#fde7f3;">Free</span>
-            </div>
-            <div class="ws-stats">
-              <div><b>4</b> boards</div>
-              <div><b>3</b> membros</div>
-            </div>
-            <div class="ws-membros">
-              <span style="background:#ec4899;"></span>
-              <span style="background:#f59e0b;"></span>
-              <span style="background:#10b981;"></span>
-            </div>
-            <button class="btn-ws" style="background:#fde7f3;color:#be185d;" onclick="location.href='kanban.html?projeto=DesignLab%20Studio&empresa=DesignLab'">Abrir workspace</button>
-          </div>
-
-          <div class="card-ws" style="border-top-color:#10b981;">
-            <div class="ws-topo">
-              <div class="ws-icone" style="background:#10b981;">PP</div>
-              <div class="ws-info">
-                <p class="nome">Projetos Pessoais</p>
-                <p class="desc">Meus estudos e estudos</p>
-              </div>
-              <span class="ws-plano" style="color:#10b981;background:#dcfce7;">Free</span>
-            </div>
-            <div class="ws-stats">
-              <div><b>3</b> boards</div>
-              <div><b>1</b> membros</div>
-            </div>
-            <div class="ws-membros">
-              <span style="background:#10b981;"></span>
-            </div>
-            <button class="btn-ws" style="background:#dcfce7;color:#047857;" onclick="location.href='kanban.html?projeto=Projetos%20Pessoais&empresa=Pessoal'">Abrir workspace</button>
-          </div>
+          {% else %}
+          <p class="sem-resultado">Nenhum workspace encontrado.</p>
+          {% endfor %}
 
         </div>
 
@@ -823,7 +722,7 @@
 
       grid.querySelectorAll('.card-template').forEach(function (card) {
         var titulo = (card.querySelector('h3') || {}).textContent.toLowerCase();
-        var empresa = (card.querySelector('.card-empresa') || {}).textContent.trim();
+        var empresa = (card.dataset.empresa || card.querySelector('.card-empresa') && card.querySelector('.card-empresa').textContent || '').trim();
         var casaBusca = !termo || titulo.indexOf(termo) !== -1 || empresa.toLowerCase().indexOf(termo) !== -1;
         var casaWs = !wsAtivo || empresa === wsAtivo;
         var ok = casaBusca && casaWs;
@@ -854,6 +753,61 @@
         el.classList.add('ativo');
       }
       filtrarTemplates();
+    }
+
+    function abrirModalNovoBoard() {
+      document.getElementById('modal-novo-board').style.display = 'flex';
+    }
+
+    function fecharModalNovoBoard() {
+      document.getElementById('modal-novo-board').style.display = 'none';
+    }
+  </script>
+
+  <!-- Modal Novo Board -->
+  <div id="modal-novo-board" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:16px;padding:32px;width:480px;box-shadow:0 20px 60px rgba(124,58,237,0.2);">
+      <h2 style="font-size:18px;font-weight:700;color:#1a1233;margin-bottom:6px;">Novo Board</h2>
+      <p style="font-size:13px;color:#9a8fbe;margin-bottom:20px;">Dê um nome e escolha um workspace</p>
+      <form method="POST" action="{{ url_for('criar_quadro') }}" id="board-form">
+        <div style="margin-bottom:18px;">
+          <label style="font-size:12px;font-weight:600;color:#7f72a6;display:block;margin-bottom:6px;">Nome do Board</label>
+          <input name="nome" id="board-nome" required placeholder="Ex: App E-commerce"
+            style="width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid #e7e0f7;font-size:14px;font-family:Inter,sans-serif;outline:none;">
+        </div>
+        <input type="hidden" name="empresa" id="board-empresa" value="">
+        <label style="font-size:12px;font-weight:600;color:#7f72a6;display:block;margin-bottom:10px;">Workspace</label>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div onclick="submitBoard('NovaTech')" style="display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1.5px solid #e7e0f7;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#7c3aed';this.style.background='#faf8ff'" onmouseout="this.style.borderColor='#e7e0f7';this.style.background=''">
+            <span style="width:44px;height:44px;border-radius:12px;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0;">N</span>
+            <div><strong style="font-size:15px;color:#1a1233;">NovaTech</strong><br><span style="font-size:12px;color:#9a8fbe;">Workspace de tecnologia</span></div>
+          </div>
+          <div onclick="submitBoard('DesignLab')" style="display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1.5px solid #e7e0f7;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#7c3aed';this.style.background='#faf8ff'" onmouseout="this.style.borderColor='#e7e0f7';this.style.background=''">
+            <span style="width:44px;height:44px;border-radius:12px;background:#ec4899;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0;">D</span>
+            <div><strong style="font-size:15px;color:#1a1233;">DesignLab</strong><br><span style="font-size:12px;color:#9a8fbe;">Workspace de design</span></div>
+          </div>
+          <div onclick="submitBoard('Pessoal')" style="display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1.5px solid #e7e0f7;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#7c3aed';this.style.background='#faf8ff'" onmouseout="this.style.borderColor='#e7e0f7';this.style.background=''">
+            <span style="width:44px;height:44px;border-radius:12px;background:#10b981;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0;">P</span>
+            <div><strong style="font-size:15px;color:#1a1233;">Pessoal</strong><br><span style="font-size:12px;color:#9a8fbe;">Workspace pessoal</span></div>
+          </div>
+        </div>
+      </form>
+      <div style="display:flex;justify-content:flex-end;margin-top:20px;">
+        <button onclick="fecharModalNovoBoard()"
+          style="padding:10px 20px;border-radius:10px;border:1.5px solid #e7e0f7;background:#fff;color:#4a4068;font-size:14px;font-weight:600;font-family:Inter,sans-serif;cursor:pointer;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function submitBoard(empresa) {
+      var nome = document.getElementById('board-nome').value.trim();
+      if (!nome) {
+        document.getElementById('board-nome').focus();
+        document.getElementById('board-nome').style.borderColor = '#ef4444';
+        return;
+      }
+      document.getElementById('board-empresa').value = empresa;
+      document.getElementById('board-form').submit();
     }
   </script>
 
