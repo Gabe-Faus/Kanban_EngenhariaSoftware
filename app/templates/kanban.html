@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flowboard - Kanban</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: #f7f5ff;
+      color: #1a1233;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: #ffffff;
+      border-right: 1px solid #ece7f9;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 8px 24px;
+      text-decoration: none;
+    }
+
+    .logo-icone {
+      width: 38px;
+      height: 38px;
+      background: #7c3aed;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .logo span {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1233;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #7f72a6;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .menu-item:hover {
+      background: #f5f3fd;
+      color: #1a1233;
+    }
+
+    .menu-item.ativo {
+      background: #f3eaff;
+      color: #6d28d9;
+      font-weight: 600;
+    }
+
+    .menu-icone {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      background: #e7e0f7;
+      flex-shrink: 0;
+    }
+
+    .menu-item.ativo .menu-icone {
+      background: #7c3aed;
+    }
+
+    .secao-titulo {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #b1a7cc;
+      padding: 24px 12px 10px;
+    }
+
+    .projeto-atual {
+      background: #f3eaff;
+      border-radius: 12px;
+      padding: 14px;
+      border-left: 3px solid #7c3aed;
+    }
+
+    .projeto-atual .proj-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .projeto-atual h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1233;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-editar-quadro {
+      width: 26px;
+      height: 26px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .btn-editar-quadro:hover { background: #d8caf5; }
+
+    .btn-editar-quadro svg {
+      width: 14px;
+      height: 14px;
+      stroke: #7f72a6;
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .btn-editar-quadro:hover svg { stroke: #6d28d9; }
+
+    .projeto-atual p {
+      font-size: 12px;
+      color: #7f72a6;
+      margin-top: 2px;
+    }
+
+    .projeto-atual .progresso {
+      height: 5px;
+      border-radius: 3px;
+      background: #e2d6f7;
+      margin: 12px 0 6px;
+      overflow: hidden;
+    }
+
+    .projeto-atual .progresso span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: #7c3aed;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .projeto-atual .pct {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6d28d9;
+    }
+
+    .mini-membros {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .mini-membros span {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #f3eaff;
+      margin-left: -6px;
+      font-size: 9px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .mini-membros span:first-child { margin-left: 0; }
+
+    .filtro-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #4a4068;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .filtro-item:hover { background: #f5f3fd; }
+
+    .filtro-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: #7c3aed;
+      background: #f3eaff;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .conteudo {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 18px 32px;
+      background: #ffffff;
+      border-bottom: 1px solid #ece7f9;
+    }
+
+    .breadcrumb {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 500;
+      color: #9a8fbe;
+    }
+
+    .breadcrumb b {
+      color: #1a1233;
+      font-weight: 600;
+    }
+
+    .topo-acoes {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatares-equipe {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatares-equipe span {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      margin-left: -8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatares-equipe span:first-child { margin-left: 0; }
+
+    .avatares-equipe .mais {
+      background: #ede7fb;
+      color: #6d28d9;
+    }
+
+    .sino {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f5f3fd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #7c3aed;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .sino .ponto {
+      position: absolute;
+      top: 8px;
+      right: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      border: 2px solid #fff;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #7c3aed;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-logout {
+      font-size: 13px;
+      font-weight: 600;
+      color: #9a8fbe;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-logout:hover {
+      background: #f5f3fd;
+      color: #be185d;
+    }
+
+    .main {
+      padding: 26px 32px 40px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .cabecalho {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .cabecalho h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1233;
+    }
+
+    .cabecalho .sub {
+      font-size: 13px;
+      font-weight: 500;
+      color: #9a8fbe;
+      margin-top: 4px;
+    }
+
+    .acoes-topo {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-secundario {
+      height: 40px;
+      padding: 0 18px;
+      background: #ffffff;
+      color: #4a4068;
+      border: 1.5px solid #e7e0f7;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-secundario:hover {
+      border-color: #c9b8f0;
+      background: #faf8ff;
+    }
+
+    .btn-novo {
+      height: 40px;
+      padding: 0 18px;
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-novo:hover {
+      background: #6d28d9;
+      transform: translateY(-1px);
+    }
+
+    .board-matrix {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .matrix-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .matrix-label {
+      width: 100px;
+      min-width: 100px;
+      background: #e8e0f7;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-weight: 700;
+      font-size: 12px;
+      color: #1a1233;
+      text-align: center;
+    }
+
+    .matrix-label .swimlane-actions {
+      display: flex;
+      gap: 3px;
+      margin-top: 2px;
+    }
+
+    .matrix-col-header {
+      flex: 1;
+      background: #f1ecfb;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1a1233;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .coluna-bola {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .coluna-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: #9a8fbe;
+      background: #e2d6f7;
+      padding: 1px 8px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .coluna-wip {
+      font-size: 12px;
+      font-weight: 600;
+      color: #7c3aed;
+      cursor: pointer;
+      padding: 1px 6px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+
+    .coluna-wip:hover {
+      background: #d6c8f5;
+    }
+
+    .matrix-cell {
+      flex: 1;
+      background: #f1ecfb;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 60px;
+    }
+
+    .tarefa {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 14px;
+      border-left: 3px solid #c4b5fd;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .tarefa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(26,18,51,0.08);
+    }
+
+    .tarefa-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .prioridade {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 7px;
+    }
+
+    .prio-alta { background: #fde7f3; color: #be185d; }
+    .prio-media { background: #fef3c7; color: #b45309; }
+    .prio-baixa { background: #e0f2fe; color: #0369a1; }
+    .prio-feito { background: #dcfce7; color: #047857; }
+
+    .menu-pontos {
+      color: #b1a7cc;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .tarefa h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1233;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: #f1ecfb;
+      color: #6d28d9;
+    }
+
+    .tarefa-progresso {
+      height: 5px;
+      border-radius: 3px;
+      background: #ece7f9;
+      margin-bottom: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .tarefa-progresso span {
+      display: block;
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    .tarefa-rodape {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tarefa-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tarefa-data {
+      font-size: 12px;
+      font-weight: 500;
+      color: #7f72a6;
+      flex: 1;
+    }
+
+    .tarefa-msg {
+      font-size: 12px;
+      font-weight: 500;
+      color: #b1a7cc;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tarefa-msg svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .tarefa-metricas {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .tm {
+      font-size: 10px;
+      font-weight: 600;
+      color: #7f72a6;
+      background: #f1ecfb;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .add-tarefa {
+      width: 100%;
+      border: 2px dashed #cdbbf0;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #a594d6;
+      cursor: pointer;
+      background: transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .add-tarefa:hover {
+      border-color: #7c3aed;
+      color: #7c3aed;
+    }
+
+    .filtros-bar {
+      display: none;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #ffffff;
+      border: 1.5px solid #ece7f9;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+    }
+
+    .filtros-bar.aberto { display: flex; }
+
+    .filtros-bar .grupo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filtros-bar .grupo-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #7f72a6;
+      margin-right: 4px;
+    }
+
+    .chip-filtro {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #e7e0f7;
+      background: #ffffff;
+      color: #4a4068;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.15s;
+    }
+
+    .chip-filtro:hover { border-color: #c9b8f0; }
+    .chip-filtro.ativo {
+      background: #7c3aed;
+      border-color: #7c3aed;
+      color: #fff;
+    }
+
+    .filtro-item.ativo {
+      background: #f3eaff;
+      color: #6d28d9;
+      font-weight: 700;
+    }
+
+    .filtros-bar .limpar {
+      margin-left: auto;
+      font-size: 13px;
+      font-weight: 600;
+      color: #7c3aed;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tarefa.oculta { display: none; }
+
+    .coluna-vazia {
+      font-size: 12px;
+      color: #a594d6;
+      text-align: center;
+      padding: 14px 0;
+      font-weight: 500;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(40,24,80,0.45);
+      z-index: 50;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .overlay.aberto {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 560px;
+      margin: auto;
+      border-top: 4px solid #7c3aed;
+      box-shadow: 0 24px 60px rgba(40,24,80,0.3);
+      overflow: hidden;
+    }
+
+    .modal-topo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 22px 24px 16px;
+    }
+
+    .modal-icone {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #f3eaff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .modal-icone span {
+      width: 14px;
+      height: 16px;
+      border: 2px solid #7c3aed;
+      border-radius: 3px;
+    }
+
+    .modal-titulo { flex: 1; }
+
+    .modal-titulo input {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1233;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+    }
+
+    .modal-codigo {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #6d28d9;
+      background: #f3eaff;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-top: 4px;
+    }
+
+    .fechar {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: none;
+      background: #f5f3fd;
+      color: #7f72a6;
+      font-size: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .fechar:hover { background: #ece7f9; }
+
+    .modal-corpo {
+      padding: 8px 24px 4px;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .campo { margin-bottom: 18px; }
+
+    .campo-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a4068;
+      margin-bottom: 8px;
+    }
+
+    .resp-lista { display: flex; gap: 8px; }
+
+    .resp {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid transparent;
+      position: relative;
+      opacity: 0.55;
+      transition: opacity 0.15s, border-color 0.15s;
+    }
+
+    .resp.ativo { opacity: 1; border-color: #1a1233; }
+
+    .resp.ativo::after {
+      content: '✓';
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 15px;
+      height: 15px;
+      background: #10b981;
+      border-radius: 50%;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+    }
+
+    .prio-lista { display: flex; gap: 10px; }
+
+    .prio-opc {
+      padding: 9px 22px;
+      border-radius: 10px;
+      border: 1.5px solid #e7e0f7;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      color: #4a4068;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .prio-opc.ativo[data-prio="Alta"] { border-color: #ef4444; color: #be185d; background: #fff5f8; }
+    .prio-opc.ativo[data-prio="Media"] { border-color: #f59e0b; color: #b45309; background: #fffbeb; }
+    .prio-opc.ativo[data-prio="Baixa"] { border-color: #3b82f6; color: #0369a1; background: #eff6ff; }
+
+    .linha-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .modal select,
+    .modal input[type="date"],
+    .modal input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1.5px solid #e7e0f7;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1233;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      background: #faf8ff;
+    }
+
+    .modal select:focus,
+    .modal input[type="date"]:focus,
+    .modal input[type="text"]:focus { border-color: #7c3aed; }
+
+    .cores-lista { display: flex; gap: 10px; }
+
+    .cor-opc {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: transform 0.12s;
+    }
+
+    .cor-opc:hover { transform: scale(1.12); }
+    .cor-opc.ativo { border-color: #1a1233; }
+
+    .tags-lista {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .tag-chip {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 7px;
+      background: #f1ecfb;
+      color: #6d28d9;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag-chip button {
+      border: none;
+      background: none;
+      color: #9a8fbe;
+      cursor: pointer;
+      font-size: 13px;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .tag-add {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      border: 1.5px dashed #c9b8f0;
+      background: #fff;
+      color: #7c3aed;
+      font-size: 16px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .modal textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid #e7e0f7;
+      font-size: 14px;
+      color: #1a1233;
+      font-family: 'Inter', sans-serif;
+      resize: vertical;
+      outline: none;
+      line-height: 1.5;
+      background: #faf8ff;
+    }
+
+    .modal textarea:focus { border-color: #7c3aed; }
+
+    .modal-rodape {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-top: 1px solid #ece7f9;
+      margin-top: 6px;
+    }
+
+    .btn-excluir {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1.5px solid #fbcfe1;
+      background: #fff;
+      color: #be185d;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-excluir:hover { background: #fff5f8; }
+
+    .rodape-dir { display: flex; gap: 10px; }
+
+    .btn-cancelar {
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 1.5px solid #e7e0f7;
+      background: #fff;
+      color: #4a4068;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-cancelar:hover { background: #faf8ff; }
+
+    .btn-salvar {
+      padding: 10px 24px;
+      border-radius: 10px;
+      border: none;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+    }
+
+    .btn-salvar:hover { background: #6d28d9; }
+
+    @media (max-width: 720px) {
+      .sidebar { display: none; }
+      .topo, .main { padding-left: 18px; padding-right: 18px; }
+      .avatares-equipe { display: none; }
+      .linha-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layout">
+
+    <aside class="sidebar">
+      <a href="{{ url_for('projetos') }}" class="logo">
+        <div class="logo-icone">K</div>
+        <span>Flowboard</span>
+      </a>
+
+      <nav class="menu">
+        <a href="{{ url_for('projetos') }}" class="menu-item ativo"><span class="menu-icone"></span>Boards</a>
+        <a href="#" class="menu-item"><span class="menu-icone"></span>Templates</a>
+        <a href="#" class="menu-item"><span class="menu-icone"></span>Membros</a>
+        <a href="#" class="menu-item"><span class="menu-icone"></span>Configs</a>
+      </nav>
+
+      <div class="secao-titulo">Projeto atual</div>
+      <div class="projeto-atual">
+        <div class="proj-header">
+          <h4 id="proj-nome">{{ quadro.nome }}</h4>
+          <button class="btn-editar-quadro" onclick="abrirModalEditarQuadro()" title="Editar projeto">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+            </svg>
+          </button>
+        </div>
+        <p id="proj-empresa">{{ quadro.empresa }}</p>
+        <div class="progresso"><span id="barra-progresso"></span></div>
+        <span class="pct" id="texto-progresso">0% concluído</span>
+        <div class="mini-membros">
+          {% for m in membros[:5] %}
+          <span style="background:{{ m.cor or '#7c3aed' }};">{{ m.iniciais or m.nome[:1].upper() }}</span>
+          {% endfor %}
+          {% if membros|length > 5 %}
+          <span style="background:#ede7fb;color:#6d28d9;">+{{ membros|length - 5 }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="secao-titulo">Filtros</div>
+      <div class="filtro-item">Minhas tarefas <span class="filtro-num" id="count-minhas">0</span></div>
+      <div class="filtro-item">Alta prioridade <span class="filtro-num" id="count-alta">0</span></div>
+      <div class="filtro-item">Vencendo hoje <span class="filtro-num" id="count-vencendo">0</span></div>
+    </aside>
+
+    <div class="conteudo">
+
+      <header class="topo">
+        <a href="{{ url_for('projetos') }}" class="logo" style="padding:0;">
+          <div class="logo-icone">K</div>
+          <span>Flowboard</span>
+        </a>
+        <div class="breadcrumb"><span id="bc-empresa">{{ quadro.empresa }}</span> / <b id="bc-projeto">{{ quadro.nome }}</b></div>
+        <div class="topo-acoes">
+          <div class="avatares-equipe">
+            {% for m in membros[:4] %}
+            <span style="background:{{ m.cor or '#7c3aed' }};">{{ m.iniciais or m.nome[:2].upper() }}</span>
+            {% endfor %}
+            {% if membros|length > 4 %}
+            <span class="mais">+{{ membros|length - 4 }}</span>
+            {% endif %}
+          </div>
+          <div class="sino">!<span class="ponto"></span></div>
+          <a href="{{ url_for('logout') }}" class="btn-logout" title="Sair">Sair</a>
+          <div class="avatar">{{ session.get('usuario_nome', '?')[:2].upper() }}</div>
+        </div>
+      </header>
+
+      <main class="main">
+
+        <div class="cabecalho">
+          <div>
+            <h1>Demandas no Kanban</h1>
+            <p class="sub" id="sub-projeto">{{ quadro.nome }}</p>
+          </div>
+          <div class="acoes-topo">
+            <button class="btn-secundario" id="btn-filtrar" onclick="toggleFiltros()">Filtrar</button>
+            <button class="btn-secundario" id="btn-agrupar" onclick="alternarAgrupamento()">Agrupar</button>
+            <button class="btn-secundario" onclick="criarRaia()">+ Nova Raia</button>
+            <button class="btn-novo" onclick="abrirModalNovo()">+ Nova Tarefa</button>
+          </div>
+        </div>
+
+        <div class="filtros-bar" id="filtros-bar">
+          <div class="grupo">
+            <span class="grupo-label">Prioridade:</span>
+            <button class="chip-filtro" data-fprio="Alta" onclick="toggleChip(this,'prio')">Alta</button>
+            <button class="chip-filtro" data-fprio="Media" onclick="toggleChip(this,'prio')">Média</button>
+            <button class="chip-filtro" data-fprio="Baixa" onclick="toggleChip(this,'prio')">Baixa</button>
+          </div>
+          <div class="grupo">
+            <span class="grupo-label">Responsável:</span>
+            {% for m in membros %}
+            <button class="chip-filtro" data-fresp-id="{{ m.id }}" data-fresp="{{ m.iniciais }}" onclick="toggleChip(this,'resp')">{{ m.iniciais }}</button>
+            {% endfor %}
+          </div>
+          <button class="limpar" onclick="limparFiltros()">Limpar filtros</button>
+        </div>
+
+        <div class="metricas-bar" id="metricas-bar">
+          <div class="metrica-card"><div class="rotulo">WIP</div><div class="valor" id="m-wip">-</div></div>
+          <div class="metrica-card"><div class="rotulo">Throughput</div><div class="valor" id="m-throughput">-</div></div>
+          <div class="metrica-card"><div class="rotulo">Concluídos</div><div class="valor" id="m-concluidos">-</div></div>
+        </div>
+        <div class="board-matrix">
+
+          <div class="matrix-row header-row">
+            <div class="matrix-label"></div>
+            {% for coluna in colunas %}
+            <div class="matrix-col-header"><span class="coluna-bola" style="background:{{ coluna.cor }};"></span> {{ coluna.nome }} <span class="coluna-count" id="col-count-{{ coluna.id }}">0</span> <span class="coluna-wip" onclick="editarWip({{ coluna.id }}, {{ coluna.qtd_max }})" title="Limite WIP">/{{ coluna.qtd_max }}</span></div>
+            {% endfor %}
+          </div>
+
+          {% for swimlane in swimlanes %}
+          <div class="matrix-row" data-raia-id="{{ swimlane.id }}">
+            <div class="matrix-label">
+              <div>{{ swimlane.nome }}</div>
+              <div class="swimlane-actions">
+                <span onclick="editarRaia({{ swimlane.id }}, '{{ swimlane.nome }}')" style="cursor:pointer;font-size:11px;color:#b1a7cc;padding:1px 4px;border-radius:4px;" onmouseover="this.style.background='#e7e0f7'" onmouseout="this.style.background='transparent'" title="Editar swimlane">✎</span>
+                <span onclick="excluirRaia({{ swimlane.id }})" style="cursor:pointer;font-size:13px;color:#b1a7cc;padding:1px 4px;border-radius:4px;" onmouseover="this.style.background='#fde7f3';this.style.color='#be185d'" onmouseout="this.style.background='transparent';this.style.color='#b1a7cc'" title="Excluir swimlane">&times;</span>
+              </div>
+            </div>
+            {% for coluna in colunas %}
+            <div class="matrix-cell" data-coluna-id="{{ coluna.id }}" data-raia-id="{{ swimlane.id }}">
+              {% for card in swimlane.celulas[coluna.id] %}
+              <div class="tarefa" style="border-left-color:{{ coluna.cor }};" data-id="{{ card.id }}" data-resp-id="{{ card.responsavel_id or '' }}" data-prio="{{ card.prioridade }}" data-criado="{{ card.criado_em }}" data-iniciado="{{ card.iniciado_em }}" data-concluido="{{ card.concluido_em }}" data-lt="{{ card.lead_time_str }}" data-ct="{{ card.cycle_time_str }}" data-desc="{{ card.descricao }}" data-coluna-id="{{ coluna.id }}" data-raia-id="{{ swimlane.id }}">
+                <div class="tarefa-topo">
+                  <span class="prioridade prio-{{ 'feito' if 'feito' in coluna.nome|lower else card.prioridade|lower }}">
+                    {{ 'Feito' if 'feito' in coluna.nome|lower else card.prioridade }}
+                  </span>
+                  <span class="menu-pontos">...</span>
+                </div>
+                <h3>{{ card.titulo }}</h3>
+                <div class="labels">
+                  {% for tag in card.tags or [] %}<span class="label">{{ tag }}</span>{% endfor %}
+                </div>
+                <div class="tarefa-rodape">
+                  <span class="tarefa-avatar" style="background:{{ card.responsavel_cor or '#7c3aed' }};">
+                    {{ card.responsavel_iniciais or '?' }}
+                  </span>
+                  <span class="tarefa-data" data-raw="{{ card.prazo or '' }}">{{ card.prazo or 'Hoje' }}</span>
+                  <span class="tarefa-msg"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> 0</span>
+                </div>
+                <div class="tarefa-metricas">
+                  {% if card.lead_time is not none %}<span class="tm" title="Lead Time">LT {{ card.lead_time }}s</span>{% endif %}
+                  {% if card.cycle_time is not none %}<span class="tm" title="Cycle Time">CT {{ card.cycle_time }}s</span>{% endif %}
+                </div>
+              </div>
+              {% endfor %}
+              <button class="add-tarefa" onclick="abrirModalNovo({{ coluna.id }}, {{ swimlane.id }})">+ Adicionar tarefa</button>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p style="color:#9a8fbe;padding:20px;">Nenhuma swimlane criada ainda.</p>
+          {% endfor %}
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <style>
+    .metricas-bar { display:flex; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+    .metrica-card { background:#fff; border-radius:12px; padding:12px 18px; flex:1; min-width:120px; border:1.5px solid #ece7f9; }
+    .metrica-card .rotulo { font-size:11px; font-weight:600; color:#9a8fbe; text-transform:uppercase; }
+    .metrica-card .valor { font-size:22px; font-weight:700; color:#1a1233; margin-top:2px; }
+    .toast-erro { position:fixed; bottom:24px; right:24px; background:#be185d; color:#fff; padding:12px 20px; border-radius:10px; font-size:14px; font-weight:600; z-index:999; box-shadow:0 8px 24px rgba(0,0,0,0.2); }
+  </style>
+  <script>
+    var QUADRO_ID = {{ quadro.id }};
+    var MEMBROS = {{ membros|tojson }};
+    var CURRENT_USER_ID = {{ session.get('usuario_id')|tojson }};
+    var COLUNAS = {{ colunas|tojson }};
+    var RAIA_LIST = [{% for s in swimlanes %}{"id":{{ s.id }},"nome":"{{ s.nome }}"}{% if not loop.last %},{% endif %}{% endfor %}];
+
+    (function () {
+      document.title = 'Flowboard - {{ quadro.nome }}';
+    })();
+
+    function normalizar(txt) {
+      return (txt || '').trim().replace('Média', 'Media');
+    }
+
+    function dadosTarefa(card) {
+      var prio = card.getAttribute('data-prio') || 'Media';
+      var avatarEl = card.querySelector('.tarefa-avatar');
+      return {
+        prio: prio,
+        resp: avatarEl ? avatarEl.textContent.trim() : '',
+        respId: card.getAttribute('data-resp-id'),
+        titulo: (card.querySelector('h3') || {}).textContent || ''
+      };
+    }
+    window.dadosTarefa = dadosTarefa;
+    
+    var filtros = { prio: [], resp: [] };
+
+    function toggleFiltros() {
+      var bar = document.getElementById('filtros-bar');
+      bar.classList.toggle('aberto');
+      document.getElementById('btn-filtrar').classList.toggle('ativo', bar.classList.contains('aberto'));
+    }
+
+    function toggleChip(btn, tipo) {
+      var valor = btn.getAttribute(tipo === 'prio' ? 'data-fprio' : 'data-fresp');
+      btn.classList.toggle('ativo');
+      var lista = filtros[tipo];
+      var idx = lista.indexOf(valor);
+      if (idx === -1) lista.push(valor); else lista.splice(idx, 1);
+      aplicarFiltros();
+    }
+
+    function limparFiltros() {
+      filtros = { prio: [], resp: [] };
+      document.querySelectorAll('.chip-filtro.ativo').forEach(function (c) { c.classList.remove('ativo'); });
+      document.querySelectorAll('.filtro-item.ativo').forEach(function (c) { c.classList.remove('ativo'); });
+      filtroSidebarAtivo = null;
+      aplicarFiltros();
+    }
+
+    var filtroSidebarAtivo = null;
+
+    function aplicarFiltros() {
+      var hoje = new Date().toISOString().split('T')[0];
+      document.querySelectorAll('.matrix-cell').forEach(function (celula) {
+        var visiveis = 0;
+        celula.querySelectorAll('.tarefa').forEach(function (card) {
+          var d = dadosTarefa(card);
+          var ok = true;
+          if (filtros.prio.length && filtros.prio.indexOf(d.prio) === -1) ok = false;
+          if (filtros.resp.length && filtros.resp.indexOf(d.resp) === -1) ok = false;
+          if (filtroSidebarAtivo === 'minhas' && d.respId != CURRENT_USER_ID) ok = false;
+          if (filtroSidebarAtivo === 'alta' && d.prio !== 'Alta') ok = false;
+          if (filtroSidebarAtivo === 'vencendo') {
+            var dataEl = card.querySelector('.tarefa-data');
+            var rawData = dataEl ? dataEl.getAttribute('data-raw') : '';
+            if (rawData !== hoje && (dataEl && dataEl.textContent.trim() !== 'Hoje')) ok = false;
+          }
+          card.classList.toggle('oculta', !ok);
+          if (ok) visiveis++;
+        });
+        var msg = celula.querySelector('.coluna-vazia');
+        if (visiveis === 0) {
+          if (!msg) {
+            msg = document.createElement('div');
+            msg.className = 'coluna-vazia';
+            msg.textContent = 'Nenhuma tarefa';
+            var add = celula.querySelector('.add-tarefa');
+            celula.insertBefore(msg, add || null);
+          }
+        } else if (msg) {
+          msg.remove();
+        }
+      });
+      atualizarContagem();
+    }
+    window.aplicarFiltros = aplicarFiltros;
+
+    function filtrarSidebar(tipo) {
+      var itens = { minhas: 0, alta: 1, vencendo: 2 };
+      var nodes = document.querySelectorAll('.sidebar .filtro-item');
+      if (filtroSidebarAtivo === tipo) {
+        filtroSidebarAtivo = null;
+        nodes[itens[tipo]].classList.remove('ativo');
+      } else {
+        filtroSidebarAtivo = tipo;
+        nodes.forEach(function (n) { n.classList.remove('ativo'); });
+        nodes[itens[tipo]].classList.add('ativo');
+      }
+      aplicarFiltros();
+    }
+
+    var agrupado = false;
+    function alternarAgrupamento() {
+      agrupado = !agrupado;
+      document.getElementById('btn-agrupar').classList.toggle('ativo', agrupado);
+      var ordem = { 'Alta': 0, 'Media': 1, 'Baixa': 2, 'Feito': 3 };
+      document.querySelectorAll('.matrix-cell').forEach(function (celula) {
+        var cards = Array.prototype.slice.call(celula.querySelectorAll('.tarefa'));
+        if (agrupado) {
+          cards.sort(function (a, b) {
+            return (ordem[dadosTarefa(a).prio] ?? 9) - (ordem[dadosTarefa(b).prio] ?? 9);
+          });
+        }
+        var add = celula.querySelector('.add-tarefa');
+        cards.forEach(function (c) { celula.insertBefore(c, add || null); });
+      });
+    }
+
+    (function () {
+      var nodes = document.querySelectorAll('.sidebar .filtro-item');
+      if (nodes[0]) nodes[0].addEventListener('click', function () { filtrarSidebar('minhas'); });
+      if (nodes[1]) nodes[1].addEventListener('click', function () { filtrarSidebar('alta'); });
+      if (nodes[2]) nodes[2].addEventListener('click', function () { filtrarSidebar('vencendo'); });
+    })();
+
+    var cardAtual = null;
+
+    var MODAL_HTML =
+      '<div class="overlay" id="overlay" onclick="fecharModalFora(event)">' +
+        '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-input">' +
+          '<div class="modal-topo">' +
+            '<div class="modal-icone"><span></span></div>' +
+            '<div class="modal-titulo">' +
+              '<input type="text" id="modal-input" placeholder="Nome da tarefa" />' +
+              '<span class="modal-codigo" id="modal-codigo">ECOM-047</span>' +
+            '</div>' +
+            '<button class="fechar" onclick="fecharModal()" aria-label="Fechar">&times;</button>' +
+          '</div>' +
+          '<div class="modal-corpo">' +
+            '<div class="campo">' +
+              '<label class="campo-label">Responsável</label>' +
+              '<div class="resp-lista" id="resp-lista"></div>' +
+            '</div>' +
+            '<div class="campo">' +
+              '<label class="campo-label">Prioridade</label>' +
+              '<div class="prio-lista" id="prio-lista">' +
+                '<button class="prio-opc ativo" data-prio="Alta" onclick="selecionarPrio(this)">Alta</button>' +
+                '<button class="prio-opc" data-prio="Media" onclick="selecionarPrio(this)">Media</button>' +
+                '<button class="prio-opc" data-prio="Baixa" onclick="selecionarPrio(this)">Baixa</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="campo">' +
+              '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">' +
+                '<div>' +
+                  '<label class="campo-label">Coluna</label>' +
+                  '<select id="modal-coluna"></select>' +
+                '</div>' +
+                '<div>' +
+                  '<label class="campo-label">Raia</label>' +
+                  '<select id="modal-raia"></select>' +
+                '</div>' +
+                '<div>' +
+                  '<label class="campo-label">Prazo</label>' +
+                  '<input type="date" id="modal-prazo" />' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="campo">' +
+              '<label class="campo-label">Cor do Card</label>' +
+              '<div class="cores-lista" id="cores-lista">' +
+                '<span class="cor-opc ativo" style="background:#7c3aed;" data-cor="#7c3aed" onclick="selecionarCor(this)"></span>' +
+                '<span class="cor-opc" style="background:#3b82f6;" data-cor="#3b82f6" onclick="selecionarCor(this)"></span>' +
+                '<span class="cor-opc" style="background:#14b8a6;" data-cor="#14b8a6" onclick="selecionarCor(this)"></span>' +
+                '<span class="cor-opc" style="background:#22c55e;" data-cor="#22c55e" onclick="selecionarCor(this)"></span>' +
+                '<span class="cor-opc" style="background:#eab308;" data-cor="#eab308" onclick="selecionarCor(this)"></span>' +
+                '<span class="cor-opc" style="background:#f59e0b;" data-cor="#f59e0b" onclick="selecionarCor(this)"></span>' +
+                '<span class="cor-opc" style="background:#ef4444;" data-cor="#ef4444" onclick="selecionarCor(this)"></span>' +
+                '<span class="cor-opc" style="background:#ec4899;" data-cor="#ec4899" onclick="selecionarCor(this)"></span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="campo">' +
+              '<label class="campo-label">Tags</label>' +
+              '<div class="tags-lista" id="tags-lista">' +
+                '<button class="tag-add" onclick="adicionarTag()" aria-label="Adicionar tag">+</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="campo metricas-modal">' +
+              '<label class="campo-label">Métricas</label>' +
+              '<div style="display:flex;gap:12px;flex-wrap:wrap;">' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Criado em:</strong> <span id="m-criado">-</span></span>' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Iniciado em:</strong> <span id="m-iniciado">-</span></span>' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Concluído em:</strong> <span id="m-concluido">-</span></span>' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Lead Time:</strong> <span id="m-lt">-</span></span>' +
+                '<span style="font-size:12px;color:#7f72a6;"><strong>Cycle Time:</strong> <span id="m-ct">-</span></span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="campo">' +
+              '<label class="campo-label">Descrição da tarefa</label>' +
+              '<textarea id="modal-desc"></textarea>' +
+            '</div>' +
+          '</div>' +
+          '<div class="modal-rodape">' +
+            '<button class="btn-excluir" onclick="excluirCard()">Excluir card</button>' +
+            '<div class="rodape-dir">' +
+              '<button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>' +
+              '<button class="btn-salvar" onclick="salvarCard()">Salvar</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    function formatarDataExibicao(isoString) {
+      if (!isoString) return "Hoje";
+      var partes = isoString.split('-');
+      if (partes.length !== 3) return "Hoje";
+      var meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+      var mesIndex = parseInt(partes[1], 10) - 1;
+      return partes[2] + ' ' + meses[mesIndex];
+    }
+
+    function abrirModalCard(card) {
+      cardAtual = card;
+      var d = dadosTarefa(card);
+      document.getElementById('modal-input').value = d.titulo;
+      
+      var colunaId = card.getAttribute('data-coluna-id');
+      var colunaSelect = document.getElementById('modal-coluna');
+      if (colunaSelect && colunaId) colunaSelect.value = colunaId;
+      var raiaId = card.getAttribute('data-raia-id');
+      var raiaSelect = document.getElementById('modal-raia');
+      if (raiaSelect && raiaId) raiaSelect.value = raiaId;
+
+      var prioBtn = document.querySelector('.prio-opc[data-prio="' + d.prio + '"]');
+      if (prioBtn) selecionarPrio(prioBtn);
+
+      document.querySelectorAll('.resp').forEach(function (r) {
+        r.classList.toggle('ativo', r.getAttribute('data-resp-id') === d.respId);
+      });
+
+      var corBordaAtual = card.style.borderLeftColor;
+      document.querySelectorAll('.cor-opc').forEach(function (c) {
+        var dataCor = c.getAttribute('data-cor');
+        c.classList.toggle('ativo', dataCor === corBordaAtual || corBordaAtual.includes(dataCor));
+      });
+
+      var dataEl = card.querySelector('.tarefa-data');
+      var inputPrazo = document.getElementById('modal-prazo');
+      if (dataEl && inputPrazo) {
+        var raw = dataEl.getAttribute('data-raw');
+        inputPrazo.value = raw ? raw : new Date().toISOString().split('T')[0];
+      }
+
+      document.getElementById('modal-desc').value = card.dataset.desc || '';
+
+      document.getElementById('m-criado').textContent = card.dataset.criado || '-';
+      document.getElementById('m-iniciado').textContent = card.dataset.iniciado || '-';
+      document.getElementById('m-concluido').textContent = card.dataset.concluido || '-';
+      document.getElementById('m-lt').textContent = card.dataset.lt || '-';
+      document.getElementById('m-ct').textContent = card.dataset.ct || '-';
+
+      var tagsLista = document.getElementById('tags-lista');
+      tagsLista.querySelectorAll('.tag-chip').forEach(function (t) { t.remove(); });
+      var addBtn = tagsLista.querySelector('.tag-add');
+      card.querySelectorAll('.label').forEach(function (lab) {
+        var chip = document.createElement('span');
+        chip.className = 'tag-chip';
+        chip.innerHTML = lab.textContent + ' <button onclick="removerTag(this)" aria-label="Remover">&times;</button>';
+        tagsLista.insertBefore(chip, addBtn);
+      });
+
+      abrirOverlay();
+    }
+
+    function abrirModalNovo(colunaId, raiaId) {
+      cardAtual = null;
+      document.getElementById('modal-input').value = '';
+      document.getElementById('modal-desc').value = '';
+      document.getElementById('modal-codigo').textContent = 'ECOM-' + Math.floor(Math.random() * 900 + 100);
+      document.getElementById('modal-prazo').value = new Date().toISOString().split('T')[0];
+      
+      var colunaSelect = document.getElementById('modal-coluna');
+      if (colunaSelect) {
+        if (colunaId) colunaSelect.value = colunaId;
+        else if (colunaSelect.options.length > 0) colunaSelect.selectedIndex = 0;
+      }
+      var raiaSelect = document.getElementById('modal-raia');
+      if (raiaSelect) {
+        if (raiaId) raiaSelect.value = raiaId;
+        else if (raiaSelect.options.length > 0) raiaSelect.selectedIndex = 0;
+      }
+      
+      document.querySelectorAll('.prio-opc').forEach(function(p){p.classList.remove('ativo');});
+      var med = document.querySelector('.prio-opc[data-prio="Media"]');
+      if (med) med.classList.add('ativo');
+      
+      abrirOverlay();
+    }
+
+    function abrirOverlay() {
+      document.getElementById('overlay').classList.add('aberto');
+      document.body.style.overflow = 'hidden';
+      setTimeout(function () { document.getElementById('modal-input').focus(); }, 50);
+    }
+
+    function fecharModal() {
+      document.getElementById('overlay').classList.remove('aberto');
+      document.body.style.overflow = '';
+    }
+
+    function fecharModalFora(e) {
+      if (e.target.id === 'overlay') fecharModal();
+    }
+
+    function selecionarResp(el) { 
+      document.querySelectorAll('.resp').forEach(function (r) { r.classList.remove('ativo'); });
+      el.classList.add('ativo'); 
+    }
+
+    function selecionarPrio(el) {
+      document.querySelectorAll('.prio-opc').forEach(function (p) { p.classList.remove('ativo'); });
+      el.classList.add('ativo');
+    }
+
+    function selecionarCor(el) {
+      document.querySelectorAll('.cor-opc').forEach(function (c) { c.classList.remove('ativo'); });
+      el.classList.add('ativo');
+    }
+
+    function removerTag(btn) { btn.parentElement.remove(); }
+
+    function adicionarTag() {
+      var nome = prompt('Nome da nova tag:');
+      if (!nome) return;
+      var list = document.getElementById('tags-lista');
+      var addBtn = list.querySelector('.tag-add');
+      var chip = document.createElement('span');
+      chip.className = 'tag-chip';
+      chip.innerHTML = nome + ' <button onclick="removerTag(this)" aria-label="Remover">&times;</button>';
+      list.insertBefore(chip, addBtn);
+    }
+
+    async function salvarCard() {
+      var titulo = document.getElementById('modal-input').value.trim();
+      var prioEl = document.querySelector('.prio-opc.ativo');
+      var prio = prioEl ? prioEl.getAttribute('data-prio') : 'Media';
+
+      var respEl = document.querySelector('.resp.ativo');
+      var respNome = respEl ? respEl.getAttribute('data-resp') : '?';
+      var respCor = respEl ? respEl.style.backgroundColor : '#7c3aed';
+      var respId = respEl ? respEl.getAttribute('data-resp-id') : null;
+
+      var corEl = document.querySelector('.cor-opc.ativo');
+      var corCard = corEl ? corEl.getAttribute('data-cor') : '#a78bfa';
+
+      var colunaSelect = document.getElementById('modal-coluna');
+      var colunaId = colunaSelect ? parseInt(colunaSelect.value, 10) : null;
+      var raiaSelect = document.getElementById('modal-raia');
+      var raiaId = raiaSelect ? parseInt(raiaSelect.value, 10) : null;
+      
+      var prazoValue = document.getElementById('modal-prazo').value;
+      var descValue = document.getElementById('modal-desc').value;
+
+      var tags = [];
+      document.querySelectorAll('#tags-lista .tag-chip').forEach(function (chip) {
+        tags.push(chip.childNodes[0].textContent.trim());
+      });
+
+      // Persistir no backend
+      var url = cardAtual ? '/cartao/' + cardAtual.dataset.id + '/editar' : '/cartao/criar';
+      var resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          titulo: titulo,
+          prioridade: prio,
+          prazo: prazoValue,
+          cor: corCard,
+          descricao: descValue,
+          tags: tags,
+          coluna_id: colunaId,
+          raia_id: raiaId,
+          responsavel: respNome,
+          responsavel_cor: respCor,
+          responsavel_id: respId
+        })
+      });
+      var json = await resp.json();
+
+      if (!json.ok) {
+        mostrarErro(json.erro || 'Erro ao salvar cartão');
+        return;
+      }
+
+      if (!cardAtual && json.ok) {
+        fecharModal();
+        location.reload();
+        return;
+      }
+
+      // Atualizar DOM (apenas edição)
+      if (cardAtual) {
+        var h3 = cardAtual.querySelector('h3');
+        if (h3 && titulo) h3.textContent = titulo;
+        
+        var nomeColuna = '';
+        COLUNAS.forEach(function(c){ if (c.id === colunaId) nomeColuna = c.nome; });
+        var isFeito = nomeColuna.toLowerCase().indexOf('feito') !== -1;
+        var pEl = cardAtual.querySelector('.prioridade');
+        if (pEl) {
+          pEl.textContent = isFeito ? 'Feito' : prio;
+          pEl.className = 'prioridade ' + (isFeito ? 'prio-feito' : { Alta: 'prio-alta', Media: 'prio-media', Baixa: 'prio-baixa' }[prio]);
+        }
+        
+        cardAtual.setAttribute('data-prio', prio);
+        cardAtual.setAttribute('data-desc', descValue);
+        cardAtual.setAttribute('data-coluna-id', colunaId);
+        cardAtual.setAttribute('data-raia-id', raiaId);
+
+        var avatarEl = cardAtual.querySelector('.tarefa-avatar');
+        if (avatarEl) {
+          avatarEl.textContent = respNome;
+          avatarEl.style.backgroundColor = respCor;
+        }
+        if (respId) cardAtual.setAttribute('data-resp-id', respId);
+
+        var dataEl = cardAtual.querySelector('.tarefa-data');
+        if (dataEl) {
+          dataEl.setAttribute('data-raw', prazoValue);
+          dataEl.textContent = formatarDataExibicao(prazoValue);
+        }
+
+        cardAtual.style.borderLeftColor = corCard;
+
+        var labelsWrap = cardAtual.querySelector('.labels');
+        if (labelsWrap) {
+          labelsWrap.innerHTML = '';
+          tags.forEach(function (nome) {
+            var span = document.createElement('span');
+            span.className = 'label';
+            span.textContent = nome;
+            labelsWrap.appendChild(span);
+          });
+        }
+
+        moverCardParaCelula(cardAtual, colunaId, raiaId);
+
+      } else if (titulo) {
+        criarCard(titulo, prio, respNome, respCor, corCard, colunaId, raiaId, prazoValue, respId);
+      }
+      
+      fecharModal();
+      aplicarFiltros();
+      carregarMetricas();
+    }
+
+    function moverCardParaCelula(card, colunaId, raiaId) {
+      var celula = document.querySelector('.matrix-cell[data-coluna-id="' + colunaId + '"][data-raia-id="' + raiaId + '"]');
+      if (celula) {
+        var add = celula.querySelector('.add-tarefa');
+        celula.insertBefore(card, add || null);
+      }
+    }
+
+    function criarCard(titulo, prio, respNome, respCor, corCard, colunaId, raiaId, prazo, respId) {
+      var classe = { Alta: 'prio-alta', Media: 'prio-media', Baixa: 'prio-baixa' }[prio];
+      var nomeColuna = '';
+      COLUNAS.forEach(function(c){ if (c.id === colunaId) nomeColuna = c.nome; });
+      var isFeito = nomeColuna.toLowerCase().indexOf('feito') !== -1;
+      var exibicaoPrio = isFeito ? 'Feito' : prio;
+      var classePrio = isFeito ? 'prio-feito' : classe;
+      var textoData = formatarDataExibicao(prazo);
+      
+      var card = document.createElement('div');
+      card.className = 'tarefa';
+      card.style.borderLeftColor = corCard;
+      if (respId) card.setAttribute('data-resp-id', respId);
+      card.setAttribute('data-prio', prio);
+      card.setAttribute('data-coluna-id', colunaId);
+      card.setAttribute('data-raia-id', raiaId);
+      card.innerHTML =
+        '<div class="tarefa-topo"><span class="prioridade ' + classePrio + '">' + exibicaoPrio + '</span><span class="menu-pontos">...</span></div>' +
+        '<h3>' + titulo + '</h3>' +
+        '<div class="labels"></div>' +
+        '<div class="tarefa-rodape"><span class="tarefa-avatar" style="background:' + respCor + ';">' + respNome + '</span><span class="tarefa-data" data-raw="' + prazo + '">' + textoData + '</span><span class="tarefa-msg"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> 0</span></div>';
+      
+      card.addEventListener('click', function () { abrirModalCard(card); });
+      
+      var tagsLista = document.getElementById('tags-lista');
+      var labelsWrap = card.querySelector('.labels');
+      tagsLista.querySelectorAll('.tag-chip').forEach(function (chip) {
+        var nome = chip.childNodes[0].textContent.trim();
+        var span = document.createElement('span');
+        span.className = 'label';
+        span.textContent = nome;
+        labelsWrap.appendChild(span);
+      });
+
+      moverCardParaCelula(card, colunaId, raiaId);
+    }
+
+    async function excluirCard() {
+      if (cardAtual && confirm('Excluir este card?')) {
+        if (cardAtual.dataset.id) {
+          await fetch('/cartao/' + cardAtual.dataset.id + '/excluir', { method: 'POST' });
+        }
+        cardAtual.remove();
+        fecharModal();
+      atualizarContagem();
+      aplicarFiltros();
+    }
+    }
+
+    function atualizarContagem() {
+      var totalTarefas = document.querySelectorAll('.tarefa').length;
+      var tarefasConcluidas = 0;
+      var minhasTarefas = 0;
+      var altaPrioridade = 0;
+      var vencendoHoje = 0;
+      var hojeStr = new Date().toISOString().split('T')[0];
+
+      COLUNAS.forEach(function(c){
+        var count = 0;
+        document.querySelectorAll('.matrix-cell[data-coluna-id="' + c.id + '"]').forEach(function (celula) {
+          count += celula.querySelectorAll('.tarefa:not(.oculta)').length;
+        });
+        var badge = document.getElementById('col-count-' + c.id);
+        if (badge) badge.textContent = count;
+        if (c.nome.toLowerCase().indexOf('feito') !== -1) {
+          tarefasConcluidas += count;
+        }
+      });
+
+      document.querySelectorAll('.tarefa').forEach(function (card) {
+        var d = dadosTarefa(card);
+        
+        if (d.respId == CURRENT_USER_ID) minhasTarefas++;
+        if (d.prio === 'Alta') altaPrioridade++;
+        
+        var dataEl = card.querySelector('.tarefa-data');
+        var rawData = dataEl ? dataEl.getAttribute('data-raw') : '';
+        if (rawData === hojeStr || (dataEl && dataEl.textContent.trim() === 'Hoje')) {
+          vencendoHoje++;
+        }
+      });
+
+      document.getElementById('count-minhas').textContent = minhasTarefas;
+      document.getElementById('count-alta').textContent = altaPrioridade;
+      document.getElementById('count-vencendo').textContent = vencendoHoje;
+
+      var pct = totalTarefas > 0 ? Math.round((tarefasConcluidas / totalTarefas) * 100) : 0;
+      document.getElementById('texto-progresso').textContent = pct + '% concluído';
+      document.getElementById('barra-progresso').style.width = pct + '%';
+    }
+
+    function carregarMetricas() {
+      fetch('/api/metricas/' + QUADRO_ID).then(function(r){ return r.json(); }).then(function(d){
+        document.getElementById('m-wip').textContent = d.wip;
+        document.getElementById('m-throughput').textContent = d.throughput + '/dia';
+        document.getElementById('m-concluidos').textContent = d.concluidos + '/' + d.total;
+      });
+    }
+
+    function mostrarErro(msg) {
+      var e = document.createElement('div');
+      e.className = 'toast-erro';
+      e.textContent = msg;
+      document.body.appendChild(e);
+      setTimeout(function(){ e.remove(); }, 4000);
+    }
+
+    function initModal() {
+      document.body.insertAdjacentHTML('beforeend', MODAL_HTML);
+      carregarMetricas();
+
+      // Preencher lista de responsáveis a partir dos membros do DB
+      var respLista = document.getElementById('resp-lista');
+      if (respLista) {
+        respLista.innerHTML = '';
+        MEMBROS.forEach(function (m) {
+          var span = document.createElement('span');
+          span.className = 'resp';
+          span.style.background = m.cor || '#7c3aed';
+          span.setAttribute('data-resp-id', m.id);
+          span.setAttribute('data-resp', m.iniciais);
+          span.textContent = m.iniciais;
+          span.onclick = function () { selecionarResp(this); };
+          respLista.appendChild(span);
+        });
+        var primeiro = respLista.querySelector('.resp');
+        if (primeiro) primeiro.classList.add('ativo');
+      }
+
+      // Preencher dropdown de coluna (fixo: A FAZER, FAZENDO, FEITO)
+      var colunaSelect = document.getElementById('modal-coluna');
+      if (colunaSelect) {
+        COLUNAS.forEach(function (c) {
+          var opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = c.nome;
+          colunaSelect.appendChild(opt);
+        });
+      }
+
+      // Preencher dropdown de raia (swimlanes)
+      var raiaSelect = document.getElementById('modal-raia');
+      if (raiaSelect) {
+        RAIA_LIST.forEach(function (r) {
+          var opt = document.createElement('option');
+          opt.value = r.id;
+          opt.textContent = r.nome;
+          raiaSelect.appendChild(opt);
+        });
+      }
+
+      document.querySelectorAll('.tarefa').forEach(function (card) {
+        card.addEventListener('click', function () { abrirModalCard(card); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') fecharModal();
+      });
+      
+      aplicarFiltros();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initModal);
+    } else {
+      initModal();
+    }
+
+    window.abrirModalCard = abrirModalCard;
+    window.abrirModalNovo = abrirModalNovo;
+    window.fecharModal = fecharModal;
+    window.fecharModalFora = fecharModalFora;
+    window.selecionarResp = selecionarResp;
+    window.selecionarPrio = selecionarPrio;
+    window.selecionarCor = selecionarCor;
+    window.removerTag = removerTag;
+    window.adicionarTag = adicionarTag;
+    window.salvarCard = salvarCard;
+    window.excluirCard = excluirCard;
+    window.editarRaia = editarRaia;
+    window.excluirRaia = excluirRaia;
+    window.criarRaia = criarRaia;
+
+    function editarWip(colunaId, atual) {
+      var qtd = prompt('Novo limite WIP para esta coluna:', atual);
+      if (qtd === null) return;
+      qtd = parseInt(qtd, 10);
+      if (isNaN(qtd) || qtd < 1) return;
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/coluna/' + colunaId + '/wip';
+      var i = document.createElement('input');
+      i.name = 'qtd_max';
+      i.value = qtd;
+      form.appendChild(i);
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function editarRaia(raiaId, nomeAtual) {
+      var nome = prompt('Nome da swimlane:', nomeAtual);
+      if (!nome || !nome.trim()) return;
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/raia/' + raiaId + '/editar';
+      var iNome = document.createElement('input');
+      iNome.name = 'nome';
+      iNome.value = nome.trim();
+      form.appendChild(iNome);
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function excluirRaia(raiaId) {
+      if (!confirm('Excluir esta swimlane? Os cartões serão movidos para outra swimlane.')) return;
+      var form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/raia/' + raiaId + '/excluir';
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function criarRaia() {
+      var nome = prompt('Nome da nova swimlane:');
+      if (nome && nome.trim()) {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/quadro/' + QUADRO_ID + '/raia/nova';
+        var input = document.createElement('input');
+        input.name = 'nome';
+        input.value = nome.trim();
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+      }
+    }
+    // ── Editar quadro ──
+    window.abrirModalEditarQuadro = function () {
+      document.getElementById('overlay-editar-quadro').classList.add('aberto');
+    };
+
+    window.fecharModalEditarQuadro = function () {
+      document.getElementById('overlay-editar-quadro').classList.remove('aberto');
+    };
+
+    window.fecharModalEditarFora = function (e) {
+      if (e.target.id === 'overlay-editar-quadro') fecharModalEditarQuadro();
+    };
+  </script>
+
+  <!-- Modal editar quadro -->
+  <div class="overlay" id="overlay-editar-quadro" onclick="fecharModalEditarFora(event)">
+    <div class="modal editar-quadro-modal" role="dialog" aria-modal="true" style="max-width:420px;">
+      <form method="POST" action="{{ url_for('editar_quadro', quadro_id=quadro.id) }}">
+        <div class="modal-topo">
+          <div class="modal-icone"><span></span></div>
+          <div class="modal-titulo" style="font-size:18px;font-weight:700;color:#1a1233;">Editar projeto</div>
+          <button type="button" class="fechar" onclick="fecharModalEditarQuadro()" aria-label="Fechar">&times;</button>
+        </div>
+        <div class="modal-corpo">
+          <div class="campo">
+            <span class="campo-label">Nome do projeto</span>
+            <input type="text" name="nome" value="{{ quadro.nome }}" />
+          </div>
+          <div class="campo">
+            <span class="campo-label">Empresa / Workspace</span>
+            <select name="empresa">
+              <option value="NovaTech" {% if quadro.empresa == 'NovaTech' %}selected{% endif %}>NovaTech</option>
+              <option value="DesignLab" {% if quadro.empresa == 'DesignLab' %}selected{% endif %}>DesignLab</option>
+              <option value="Pessoal" {% if quadro.empresa == 'Pessoal' %}selected{% endif %}>Pessoal</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-rodape" style="padding:16px 24px 24px;display:flex;gap:10px;justify-content:flex-end;">
+          <button type="button" class="btn-secundario" onclick="fecharModalEditarQuadro()">Cancelar</button>
+          <button type="submit" class="btn-novo" style="padding:10px 24px;">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

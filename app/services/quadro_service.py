@@ -99,5 +99,29 @@ class QuadroService:
             print(f"Error deleting quadro: {e}")
             self.db.conn.rollback()
             return False    
+
+    def atualizar_quadro(self, id_quadro, nome=None, descricao=None):
+        """
+        Update quadro name and/or description (workspace)
+        Returns: True if updated successfully, False otherwise
+        """
+        try:
+            updates = []
+            params = []
+            if nome:
+                updates.append("NOME = %s"); params.append(nome.strip())
+            if descricao is not None:
+                updates.append("DESCRICAO = %s"); params.append(descricao.strip() if descricao else '')
+            if not updates:
+                return True
+            params.append(id_quadro)
+            query = f"UPDATE QUADRO SET {', '.join(updates)} WHERE ID_QUADRO = %s"
+            self.db.cursor.execute(query, params)
+            self.db.commit()
+            return True
+        except Error as e:
+            print(f"Error updating quadro: {e}")
+            self.db.conn.rollback()
+            return False
             
     

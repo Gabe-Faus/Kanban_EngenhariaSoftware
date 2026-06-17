@@ -460,50 +460,50 @@
 
       <hr>
 
-      <form onsubmit="return false;">
+      <form method="POST" action="{{ url_for('cadastro') }}">
 
         <div class="duas-colunas">
           <div class="campo">
             <label for="nome">Nome</label>
-            <input type="text" id="nome" placeholder="Seu nome">
+            <input type="text" id="nome" name="nome" placeholder="Seu nome">
           </div>
           <div class="campo">
             <label for="sobrenome">Sobrenome</label>
-            <input type="text" id="sobrenome" placeholder="Seu sobrenome">
+            <input type="text" id="sobrenome" name="sobrenome" placeholder="Seu sobrenome">
           </div>
         </div>
 
         <div class="campo">
           <label for="email">E-mail</label>
-          <input type="email" id="email" placeholder="seu@email.com">
+          <input type="email" id="email" name="email" placeholder="seu@email.com">
         </div>
 
         <div class="duas-colunas">
           <div class="campo">
             <label for="senha">Senha</label>
             <div class="campo-senha">
-              <input type="password" id="senha" placeholder="Sua senha">
+              <input type="password" id="senha" name="senha" placeholder="Sua senha">
               <span class="btn-mostrar" onclick="mostrarSenha('senha', this)">Mostrar</span>
             </div>
           </div>
           <div class="campo">
             <label for="confirmar">Confirmar senha</label>
             <div class="campo-senha">
-              <input type="password" id="confirmar" placeholder="Confirmar">
+              <input type="password" id="confirmar" name="confirmar" placeholder="Confirmar">
               <span class="btn-mostrar" onclick="mostrarSenha('confirmar', this)">Mostrar</span>
             </div>
           </div>
         </div>
 
         <div class="botoes">
-          <button type="button" class="btn-voltar" onclick="window.location.href='login.html'">Voltar</button>
+          <button type="button" class="btn-voltar" onclick="window.location.href='{{ url_for('login') }}'">Voltar</button>
           <button type="submit" class="btn-cadastrar">Cadastrar</button>
         </div>
 
       </form>
 
       <div class="rodape-card">
-        <p>Já tem uma conta? <a href="login.html">Fazer login</a></p>
+        <p>Já tem uma conta? <a href="{{ url_for('login') }}">Fazer login</a></p>
       </div>
 
     </div>

@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flowboard - Projetos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: #f7f5ff;
+      color: #1a1233;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: #ffffff;
+      border-right: 1px solid #ece7f9;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 8px 24px;
+    }
+
+    .logo-icone {
+      width: 38px;
+      height: 38px;
+      background: #7c3aed;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .logo span {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1233;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #7f72a6;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .menu-item:hover {
+      background: #f5f3fd;
+      color: #1a1233;
+    }
+
+    .menu-item.ativo {
+      background: #f3eaff;
+      color: #6d28d9;
+      font-weight: 600;
+    }
+
+    .menu-icone {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      background: #e7e0f7;
+      flex-shrink: 0;
+    }
+
+    .menu-item.ativo .menu-icone {
+      background: #7c3aed;
+    }
+
+    .secao-titulo {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #b1a7cc;
+      padding: 24px 12px 10px;
+    }
+
+    .workspace-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #4a4068;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .workspace-item:hover {
+      background: #f5f3fd;
+    }
+
+    .workspace-item.ativo {
+      background: #f3eaff;
+      color: #6d28d9;
+      font-weight: 700;
+    }
+
+    .menu-item.ativo .menu-icone { background: #7c3aed; }
+
+    .card-template.oculto,
+    .card-ws.oculto { display: none; }
+
+    .sem-resultado {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 40px 0;
+      color: #9a8fbe;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .ws-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .upgrade {
+      margin-top: auto;
+      background: #f3eaff;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .upgrade .barra {
+      height: 4px;
+      border-radius: 2px;
+      background: #7c3aed;
+      width: 70%;
+      margin-bottom: 12px;
+    }
+
+    .upgrade h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1233;
+    }
+
+    .upgrade p {
+      font-size: 12px;
+      color: #7f72a6;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    .btn-planos {
+      width: 100%;
+      height: 38px;
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-planos:hover {
+      background: #6d28d9;
+    }
+
+    /* ===== CONTEUDO ===== */
+    .conteudo {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 36px;
+      background: #ffffff;
+      border-bottom: 1px solid #ece7f9;
+    }
+
+    .busca {
+      flex: 1;
+      max-width: 520px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .busca input {
+      width: 100%;
+      height: 44px;
+      background: #f5f3fd;
+      border: 1.5px solid #e7e0f7;
+      border-radius: 12px;
+      padding: 0 16px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      color: #1a1233;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .busca input:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+    }
+
+    .busca input::placeholder {
+      color: rgba(127,114,166,0.6);
+    }
+
+    .topo-acoes {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sino {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f5f3fd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #7c3aed;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .sino .ponto {
+      position: absolute;
+      top: 8px;
+      right: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      border: 2px solid #fff;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #7c3aed;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-logout {
+      font-size: 13px;
+      font-weight: 600;
+      color: #9a8fbe;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-logout:hover {
+      background: #f5f3fd;
+      color: #be185d;
+    }
+
+    .main {
+      padding: 28px 36px 40px;
+    }
+
+    .cabecalho {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .cabecalho h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1233;
+    }
+
+    .btn-novo {
+      height: 42px;
+      padding: 0 20px;
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-novo:hover {
+      background: #6d28d9;
+      transform: translateY(-1px);
+    }
+
+    .subtitulo-secao {
+      font-size: 13px;
+      font-weight: 500;
+      color: #9a8fbe;
+      margin-bottom: 16px;
+    }
+
+    /* ===== GRID DE TEMPLATES ===== */
+    .grid-templates {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card-template {
+      display: block;
+      text-decoration: none;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(124,58,237,0.06);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .card-template:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(124,58,237,0.14);
+    }
+
+    .preview {
+      height: 90px;
+      padding: 14px;
+      display: flex;
+      gap: 8px;
+      position: relative;
+    }
+
+    .preview .col {
+      flex: 1;
+      background: rgba(255,255,255,0.55);
+      border-radius: 7px;
+      height: 100%;
+    }
+
+    .tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      color: white;
+      background: rgba(0,0,0,0.35);
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+
+    .card-body {
+      padding: 14px 16px 16px;
+    }
+
+    .card-body h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1233;
+    }
+
+    .card-empresa {
+      font-size: 12px;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .progresso {
+      height: 5px;
+      border-radius: 3px;
+      background: #ece7f9;
+      margin-top: 14px;
+      overflow: hidden;
+    }
+
+    .progresso span {
+      display: block;
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    .tarefas {
+      text-align: right;
+      font-size: 11px;
+      font-weight: 500;
+      color: #9a8fbe;
+      margin-top: 8px;
+    }
+
+    .grid-workspaces {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card-ws {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      border-top: 4px solid #7c3aed;
+      box-shadow: 0 2px 8px rgba(124,58,237,0.06);
+    }
+
+    .ws-topo {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .ws-icone {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .ws-info {
+      flex: 1;
+    }
+
+    .ws-info .nome {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1233;
+    }
+
+    .ws-info .desc {
+      font-size: 12px;
+      color: #9a8fbe;
+      margin-top: 2px;
+    }
+
+    .ws-plano {
+      font-size: 11px;
+      font-weight: 600;
+      color: #7c3aed;
+      background: #f3eaff;
+      padding: 3px 10px;
+      border-radius: 8px;
+    }
+
+    .ws-stats {
+      display: flex;
+      gap: 24px;
+      margin: 18px 0 14px;
+    }
+
+    .ws-stats div {
+      font-size: 13px;
+      color: #4a4068;
+    }
+
+    .ws-stats div b {
+      color: #1a1233;
+    }
+
+    .ws-membros {
+      display: flex;
+      margin-bottom: 16px;
+    }
+
+    .ws-membros span {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      margin-left: -8px;
+    }
+
+    .ws-membros span:first-child {
+      margin-left: 0;
+    }
+
+    .btn-ws {
+      width: 100%;
+      height: 40px;
+      background: #f3eaff;
+      color: #6d28d9;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-ws:hover {
+      background: #e7d8ff;
+    }
+
+    .card-ws-novo {
+      border: 2px dashed #d9cdf5;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a594d6;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      min-height: 220px;
+      background: transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .card-ws-novo:hover {
+      border-color: #7c3aed;
+      color: #7c3aed;
+    }
+
+    @media (max-width: 1100px) {
+      .grid-templates { grid-template-columns: repeat(2, 1fr); }
+      .grid-workspaces { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 720px) {
+      .sidebar { display: none; }
+      .grid-templates { grid-template-columns: 1fr; }
+      .grid-workspaces { grid-template-columns: 1fr; }
+      .topo, .main { padding-left: 18px; padding-right: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icone">K</div>
+        <span>Flowboard</span>
+      </div>
+
+      <nav class="menu">
+        <div class="menu-item ativo" onclick="selecionarMenu(this)"><span class="menu-icone"></span>Boards</div>
+        <div class="menu-item" onclick="selecionarMenu(this)"><span class="menu-icone"></span>Templates</div>
+        <div class="menu-item" onclick="selecionarMenu(this)"><span class="menu-icone"></span>Membros</div>
+        <div class="menu-item" onclick="selecionarMenu(this)"><span class="menu-icone"></span>Configurações</div>
+      </nav>
+
+      <div class="secao-titulo">Workspaces</div>
+      <div class="workspace-item" onclick="filtrarWorkspace(this,'NovaTech')"><span class="ws-badge" style="background:#7c3aed;">N</span>NovaTech</div>
+      <div class="workspace-item" onclick="filtrarWorkspace(this,'DesignLab')"><span class="ws-badge" style="background:#ec4899;">D</span>DesignLab</div>
+      <div class="workspace-item" onclick="filtrarWorkspace(this,'Pessoal')"><span class="ws-badge" style="background:#10b981;">P</span>Pessoal</div>
+
+      <div class="upgrade">
+        <div class="barra"></div>
+        <h4>Upgrade para Pro</h4>
+        <p>Boards ilimitados e membros.</p>
+        <button class="btn-planos" onclick="alert('Planos Pro em breve!')">Ver planos</button>
+      </div>
+    </aside>
+
+    <div class="conteudo">
+
+      <header class="topo">
+        <div class="busca">
+          <input type="text" id="busca" placeholder="Buscar boards, templates..." oninput="filtrarTemplates()">
+        </div>
+        <div class="topo-acoes">
+          <div class="sino">!<span class="ponto"></span></div>
+          <a href="{{ url_for('logout') }}" class="btn-logout" title="Sair">Sair</a>
+          <div class="avatar">{{ session.get('usuario_nome', '?')[:2].upper() }}</div>
+        </div>
+      </header>
+
+      <main class="main">
+
+        <div class="cabecalho">
+          <h1>Templates mais populares</h1>
+          <button class="btn-novo" onclick="abrirModalNovoBoard()">+ Novo Board</button>
+        </div>
+        <p class="subtitulo-secao">Vistos recentemente</p>
+
+
+        <div class="grid-templates">
+
+          {% for quadro in quadros %}
+          <div class="card-template-wrapper" style="position:relative;">
+            <a class="card-template" href="{{ url_for('kanban', quadro_id=quadro.id) }}" data-empresa="{{ quadro.empresa }}">
+              <div class="preview" style="background:{{ quadro.cor or '#8b5cf6' }};">
+                <span class="col"></span><span class="col"></span><span class="col"></span>
+                <span class="tag">{{ quadro.tag or 'Dev' }}</span>
+              </div>
+              <div class="card-body">
+                <h3>{{ quadro.nome }}</h3>
+                <p class="card-empresa" style="color:{{ quadro.cor or '#8b5cf6' }};">{{ quadro.empresa }}</p>
+                <div class="progresso"><span style="width:{{ quadro.progresso or 0 }}%;background:{{ quadro.cor or '#8b5cf6' }};"></span></div>
+                <p class="tarefas">{{ quadro.concluidas or 0 }}/{{ quadro.total or 0 }} tarefas</p>
+              </div>
+            </a>
+            <form method="POST" action="{{ url_for('excluir_quadro', quadro_id=quadro.id) }}" onsubmit="return confirm('Excluir este board permanentemente?');" style="position:absolute;top:8px;right:8px;z-index:2;">
+              <button type="submit" style="background:#fee2e2;border:none;border-radius:6px;color:#be185d;cursor:pointer;font-size:14px;padding:2px 8px;line-height:1.4;" title="Excluir board">&times;</button>
+            </form>
+          </div>
+          {% else %}
+          <p class="sem-resultado">Nenhum board encontrado. Crie um novo!</p>
+          {% endfor %}
+
+        </div>
+
+        <div class="cabecalho" style="margin-bottom:4px;">
+          <h1>Seus Workspaces</h1>
+        </div>
+        <p class="subtitulo-secao">Seus espaços de trabalho e times</p>
+
+        <div class="grid-workspaces">
+
+          {% for ws in workspaces %}
+          <div class="card-ws" style="border-top-color:{{ ws.cor or '#7c3aed' }};">
+            <div class="ws-topo">
+              <div class="ws-icone" style="background:{{ ws.cor or '#7c3aed' }};">{{ ws.sigla or ws.nome[:2].upper() }}</div>
+              <div class="ws-info">
+                <p class="nome">{{ ws.nome }}</p>
+                <p class="desc">{{ ws.descricao or '' }}</p>
+              </div>
+              <span class="ws-plano">{{ ws.plano or 'Free' }}</span>
+            </div>
+            <div class="ws-stats">
+              <div><b>{{ ws.num_boards or 0 }}</b> boards</div>
+              <div><b>{{ ws.num_membros or 0 }}</b> membros</div>
+            </div>
+            <div class="ws-membros">
+              {% for m in ws.membros %}<span style="background:{{ m.cor or '#7c3aed' }};"></span>{% endfor %}
+            </div>
+            {% if ws.quadro_principal_id %}
+            <button class="btn-ws" style="background:{{ ws.cor_btn or '' }};color:{{ ws.cor_btn_texto or '' }};"
+              onclick="location.href='{{ url_for('kanban', quadro_id=ws.quadro_principal_id) }}'">Abrir workspace</button>
+            {% else %}
+            <button class="btn-ws" style="background:#e7e0f7;color:#9a8fbe;cursor:default;" disabled>Sem boards</button>
+            {% endif %}
+          </div>
+          {% else %}
+          <p class="sem-resultado">Nenhum workspace encontrado.</p>
+          {% endfor %}
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function selecionarMenu(el) {
+      document.querySelectorAll('.menu .menu-item').forEach(function (m) { m.classList.remove('ativo'); });
+      el.classList.add('ativo');
+    }
+
+    var wsAtivo = null;
+
+    function filtrarTemplates() {
+      var termo = (document.getElementById('busca').value || '').toLowerCase().trim();
+      var grid = document.querySelector('.grid-templates');
+      var visiveis = 0;
+
+      grid.querySelectorAll('.card-template').forEach(function (card) {
+        var titulo = (card.querySelector('h3') || {}).textContent.toLowerCase();
+        var empresa = (card.dataset.empresa || card.querySelector('.card-empresa') && card.querySelector('.card-empresa').textContent || '').trim();
+        var casaBusca = !termo || titulo.indexOf(termo) !== -1 || empresa.toLowerCase().indexOf(termo) !== -1;
+        var casaWs = !wsAtivo || empresa === wsAtivo;
+        var ok = casaBusca && casaWs;
+        card.classList.toggle('oculto', !ok);
+        if (ok) visiveis++;
+      });
+
+      var msg = grid.querySelector('.sem-resultado');
+      if (visiveis === 0) {
+        if (!msg) {
+          msg = document.createElement('p');
+          msg.className = 'sem-resultado';
+          msg.textContent = 'Nenhum board encontrado.';
+          grid.appendChild(msg);
+        }
+      } else if (msg) {
+        msg.remove();
+      }
+    }
+
+    function filtrarWorkspace(el, nome) {
+      if (wsAtivo === nome) {
+        wsAtivo = null;
+        el.classList.remove('ativo');
+      } else {
+        wsAtivo = nome;
+        document.querySelectorAll('.workspace-item').forEach(function (w) { w.classList.remove('ativo'); });
+        el.classList.add('ativo');
+      }
+      filtrarTemplates();
+    }
+
+    function abrirModalNovoBoard() {
+      document.getElementById('modal-novo-board').style.display = 'flex';
+    }
+
+    function fecharModalNovoBoard() {
+      document.getElementById('modal-novo-board').style.display = 'none';
+    }
+  </script>
+
+  <!-- Modal Novo Board -->
+  <div id="modal-novo-board" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:16px;padding:32px;width:480px;box-shadow:0 20px 60px rgba(124,58,237,0.2);">
+      <h2 style="font-size:18px;font-weight:700;color:#1a1233;margin-bottom:6px;">Novo Board</h2>
+      <p style="font-size:13px;color:#9a8fbe;margin-bottom:20px;">Dê um nome e escolha um workspace</p>
+      <form method="POST" action="{{ url_for('criar_quadro') }}" id="board-form">
+        <div style="margin-bottom:18px;">
+          <label style="font-size:12px;font-weight:600;color:#7f72a6;display:block;margin-bottom:6px;">Nome do Board</label>
+          <input name="nome" id="board-nome" required placeholder="Ex: App E-commerce"
+            style="width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid #e7e0f7;font-size:14px;font-family:Inter,sans-serif;outline:none;">
+        </div>
+        <input type="hidden" name="empresa" id="board-empresa" value="">
+        <label style="font-size:12px;font-weight:600;color:#7f72a6;display:block;margin-bottom:10px;">Workspace</label>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div onclick="submitBoard('NovaTech')" style="display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1.5px solid #e7e0f7;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#7c3aed';this.style.background='#faf8ff'" onmouseout="this.style.borderColor='#e7e0f7';this.style.background=''">
+            <span style="width:44px;height:44px;border-radius:12px;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0;">N</span>
+            <div><strong style="font-size:15px;color:#1a1233;">NovaTech</strong><br><span style="font-size:12px;color:#9a8fbe;">Workspace de tecnologia</span></div>
+          </div>
+          <div onclick="submitBoard('DesignLab')" style="display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1.5px solid #e7e0f7;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#7c3aed';this.style.background='#faf8ff'" onmouseout="this.style.borderColor='#e7e0f7';this.style.background=''">
+            <span style="width:44px;height:44px;border-radius:12px;background:#ec4899;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0;">D</span>
+            <div><strong style="font-size:15px;color:#1a1233;">DesignLab</strong><br><span style="font-size:12px;color:#9a8fbe;">Workspace de design</span></div>
+          </div>
+          <div onclick="submitBoard('Pessoal')" style="display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1.5px solid #e7e0f7;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#7c3aed';this.style.background='#faf8ff'" onmouseout="this.style.borderColor='#e7e0f7';this.style.background=''">
+            <span style="width:44px;height:44px;border-radius:12px;background:#10b981;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;flex-shrink:0;">P</span>
+            <div><strong style="font-size:15px;color:#1a1233;">Pessoal</strong><br><span style="font-size:12px;color:#9a8fbe;">Workspace pessoal</span></div>
+          </div>
+        </div>
+      </form>
+      <div style="display:flex;justify-content:flex-end;margin-top:20px;">
+        <button onclick="fecharModalNovoBoard()"
+          style="padding:10px 20px;border-radius:10px;border:1.5px solid #e7e0f7;background:#fff;color:#4a4068;font-size:14px;font-weight:600;font-family:Inter,sans-serif;cursor:pointer;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function submitBoard(empresa) {
+      var nome = document.getElementById('board-nome').value.trim();
+      if (!nome) {
+        document.getElementById('board-nome').focus();
+        document.getElementById('board-nome').style.borderColor = '#ef4444';
+        return;
+      }
+      document.getElementById('board-empresa').value = empresa;
+      document.getElementById('board-form').submit();
+    }
+  </script>
+
+</body>
+</html>
