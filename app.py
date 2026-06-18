@@ -263,8 +263,8 @@ def kanban(quadro_id):
     agora = datetime.now()
 
     db.cursor.execute("""
-        SELECT C.ID_CARTAO, C.NOME, C.DATA_FINAL, C.PRIORIDADE, C.DESCRICAO,
-               C.DATA_CRIACAO, C.DATA_ENTRADA_FAZENDO, C.DATA_ENTRADA_FEITO,
+        SELECT C.ID_CARTAO, C.NOME, C.DATA_FINAL, C.DESCRICAO,
+               C.DATA_CRIACAO, C.DATA_INICIO, C.DATA_FINAL,
                C.ID_RAIA, C.ID_COLUNA, C.ORDEM
         FROM CARTAO C
         WHERE C.ID_RAIA IN (SELECT ID_RAIA FROM RAIA WHERE ID_QUADRO = %s)
@@ -276,7 +276,7 @@ def kanban(quadro_id):
         cards_by_raia[sw.id] = {col['id']: [] for col in colunas}
 
     for row in db.cursor.fetchall():
-        cid, nome, data_final, prio, desc, criacao, ent_faz, ent_feito, rid, cid_col, ordem = row
+        cid, nome, data_final, desc, criacao, ent_faz, ent_feito, rid, cid_col, ordem = row
         if rid not in cards_by_raia:
             cards_by_raia[rid] = {col['id']: [] for col in colunas}
         if cid_col not in cards_by_raia[rid]:
@@ -622,13 +622,13 @@ def metricas_quadro(quadro_id):
         db.cursor.execute("""
             SELECT
                 CASE
-                    WHEN COUNT(*) > 0 AND MIN(C.DATA_ENTRADA_FEITO) IS NOT NULL
-                    THEN COUNT(*)::float / GREATEST(EXTRACT(EPOCH FROM (MAX(C.DATA_ENTRADA_FEITO) - MIN(C.DATA_ENTRADA_FEITO))) / 86400, 1)
+                    WHEN COUNT(*) > 0 AND MIN(C.DATA_INICIO) IS NOT NULL
+                    THEN COUNT(*)::float / GREATEST(MAX(C.DATA_INICIO) - MIN(C.DATA_INICIO), 1)
                     ELSE 0
                 END
             FROM CARTAO C
             JOIN COLUNA CL ON CL.ID_COLUNA = C.ID_COLUNA
-            WHERE CL.ID_QUADRO = %s AND C.DATA_ENTRADA_FEITO IS NOT NULL
+            WHERE CL.ID_QUADRO = %s AND C.DATA_INICIO IS NOT NULL
         """, (quadro_id,))
         row = db.cursor.fetchone()
         throughput = round(row[0], 2) if row else 0
