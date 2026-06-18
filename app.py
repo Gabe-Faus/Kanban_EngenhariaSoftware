@@ -6,6 +6,24 @@ def fmt_duracao(segundos):
     if segundos is None: return '-'
     return f'{int(segundos)}s'
 
+def init_db():
+    try:
+        db = Database()
+        db.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS COLUNA (
+                ID_COLUNA INT GENERATED ALWAYS AS IDENTITY,
+                NOME VARCHAR(50) NOT NULL,
+                ID_QUADRO INT NOT NULL,
+                QTD_MAX INT NOT NULL DEFAULT 5,
+                PRIMARY KEY (ID_COLUNA),
+                FOREIGN KEY (ID_QUADRO) REFERENCES QUADRO(ID_QUADRO) ON DELETE CASCADE
+            )
+        """)
+        db.commit()
+        db.close()
+    except:
+        pass
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask import session
 
@@ -25,6 +43,8 @@ app = Flask(
 )
 
 app.secret_key = "teste"
+
+init_db()
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
