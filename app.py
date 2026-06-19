@@ -168,6 +168,14 @@ def criar_quadro():
         db.cursor.execute("INSERT INTO COLUNA (NOME, ID_QUADRO, QTD_MAX) VALUES (%s, %s, %s)", (nome_col, quadro_id, col_wip[nome_col]))
     db.cursor.execute("INSERT INTO RAIA (QTD_MAX, NOME, ID_QUADRO, ORDEM) VALUES (10, 'Geral', %s, 0)", (quadro_id,))
     db.commit()
+
+    db.cursor.execute(
+        "SELECT ID_COLUNA, NOME FROM COLUNA WHERE ID_QUADRO = %s",
+        (quadro_id,)
+    )
+
+    print("COLUNAS:", db.cursor.fetchall())
+
     db.close()
     return redirect(url_for('kanban', quadro_id=quadro_id))
 
@@ -263,8 +271,8 @@ def kanban(quadro_id):
     agora = datetime.now()
 
     db.cursor.execute("""
-        SELECT C.ID_CARTAO, C.NOME, C.DATA_FINAL, C.DESCRICAO,
-               C.DATA_CRIACAO, C.DATA_INICIO, C.DATA_FINAL,
+        SELECT C.ID_CARTAO, C.NOME, C.DATA_FINAL, C.PRIORIDADE, C.DESCRICAO,
+               C.DATA_CRIACAO, C.DATA_ENTRADA_FAZENDO, C.DATA_ENTRADA_FEITO,
                C.ID_RAIA, C.ID_COLUNA, C.ORDEM
         FROM CARTAO C
         WHERE C.ID_RAIA IN (SELECT ID_RAIA FROM RAIA WHERE ID_QUADRO = %s)
@@ -276,7 +284,7 @@ def kanban(quadro_id):
         cards_by_raia[sw.id] = {col['id']: [] for col in colunas}
 
     for row in db.cursor.fetchall():
-        cid, nome, data_final, desc, criacao, ent_faz, ent_feito, rid, cid_col, ordem = row
+        cid, nome, data_final, desc, prio, criacao, ent_faz, ent_feito, rid, cid_col,  ordem = row
         if rid not in cards_by_raia:
             cards_by_raia[rid] = {col['id']: [] for col in colunas}
         if cid_col not in cards_by_raia[rid]:
@@ -296,8 +304,9 @@ def kanban(quadro_id):
 
         lead_seg = None
         feito_end = ent_feito or (agora if em_feito else None)
+        
         if feito_end and criacao:
-            lead_seg = (feito_end - criacao).total_seconds()
+            lead_seg = (feito_end.date() - criacao.date()).days * 86400
 
         cycle_seg = None
         if ent_faz:
@@ -446,7 +455,7 @@ def criar_cartao():
 
     db = Database()
     db.cursor.execute("""
-        INSERT INTO CARTAO (DATA_INICIO, DATA_FINAL, DATA_CRIACAO, NOME, ORDEM, ID_RAIA, ID_COLUNA, DESCRICAO, PRIORIDADE, ID_USUARIO)
+        INSERT INTO CARTAO (DATA_INICIO, DATA_FINAL, DATA_CRIACAO, NOME, ORDEM, ID_RAIA, ID_COLUNA, PRIORIDADE,  DESCRICAO, ID_USUARIO)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING ID_CARTAO
     """, (d.get('prazo'), d.get('prazo'), datetime.now(), d['titulo'], 0, raia_id, coluna_id,
